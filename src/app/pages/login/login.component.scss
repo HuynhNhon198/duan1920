@@ -1,0 +1,97 @@
+// .conter {
+//   height: 100%;
+
+//   & > .login {
+//     padding: 24px;
+//     background: #fff;
+//     border-radius: 4px;
+//     box-shadow: 0px 3px 81px 20px #00000017;
+//     .login-form, p {
+//       max-width: 300px;
+//       margin: 0 auto;
+//     }
+
+//     .login-form-forgot {
+//       float: right;
+//     }
+
+//     .login-form-button {
+//       width: 100%;
+//       margin: 25px 0;
+//     }
+//     button.google {
+//       color: #a24040cc;
+//       font-weight: 600;
+//       border: #5d07076b solid 1px;
+//     }
+//     button.register {
+//       color: #094b92;
+//       border: #094b9278 solid 1px;
+//     }
+//   }
+// }
+
+// img.cover {
+//   border-radius: 50%;
+//   margin-left: 200px;
+// }
+
+// @media only screen and (min-width: 600px) {
+//   .login {
+//     margin-right: 150px;
+//   }
+// }
+
+// @media only screen and (min-width: 1400px) {
+//   .login {
+//     margin-right: 300px;
+//   }
+//   img.cover {
+//     margin-left: 300px;
+//   }
+// }
+
+.login {
+  & > div {
+    height: 100vh;
+  }
+
+  div.login-area {
+    height: 100%;
+
+    h1.title {
+      font-family: "Baloo 2", cursive;
+      text-align: center;
+      font-size: 45px;
+      line-height: 50px;
+      color: #096dd9;
+      margin: 10px;
+    }
+
+    .logo {
+      margin: 10px auto;
+      display: block;
+      margin-bottom: 30px;
+    }
+
+    .login {
+      padding: 24px;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0px 3px 81px 20px #00000017;
+      .login-form,
+      p {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .login-form-forgot {
+        float: right;
+      }
+
+      .login-form-button {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

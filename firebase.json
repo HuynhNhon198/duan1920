@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "dist/DUAN1920",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

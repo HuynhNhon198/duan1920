@@ -1,0 +1,34 @@
+<ng-container *ngIf="type === undefined; else taode">
+    <h1>LỰA CHỌN LOẠI ĐỀ BẠN MUỐN TẠO</h1>
+
+    <div nz-row class="content">
+        <div nz-col [nzSm]="12" [nzXs]="24">
+            <h2> <button nz-button nzType="primary" (click)="type = 0">TẠO ĐỀ THỦ CÔNG</button></h2>
+            <p>
+                Bạn sẽ tạo từng câu hỏi bằng công cụ soạn thảo của website, và đồng thời tạo từng câu trả lời cho mỗi
+                câu hỏi đó.
+            </p>
+            <img src="assets/basic.svg" alt="">
+        </div>
+        <div nz-col [nzSm]="12" [nzXs]="24">
+            <h2><button nz-button nzType="primary" (click)="type = 1">TẠO ĐỀ TỪ FILE (Pdf)</button></h2>
+            <p>
+                Tạo nhanh đề từ file pdf có sẵn, bạn chỉ việc đặt đáp án đúng cho mỗi câu hỏi. Hệ thống sẽ tự lưu file
+                và hiển thị cho học sinh làm bài.
+                <br>
+            </p>
+            <img src="assets/iframe.svg" alt="">
+        </div>
+    </div>
+</ng-container>
+<ng-template #taode>
+    <div nz-row style="margin-bottom: 20px;">
+        <button nz-button nzType="outline" (click)="type = undefined"><i nz-icon nzType="left"></i>QUAY LẠI</button>
+    </div>
+    <ng-container *ngIf="type === 0">
+        <app-type0></app-type0>
+    </ng-container>
+    <ng-container *ngIf="type === 1">
+        <app-type1></app-type1>
+    </ng-container>
+</ng-template>

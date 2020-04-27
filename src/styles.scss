@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+.ant-btn-primary {
+    background-color: #536dfe;
+}
+
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected, .ant-menu.ant-menu-dark .ant-menu-item-selected {
+    background-color: #536dfe;
+}

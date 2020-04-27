@@ -1,0 +1,118 @@
+<!-- <div nz-row nzJustify="space-between" nzAlign="middle" *ngIf="login; else register" class="conter">
+    
+    <div nz-col nzXs="0" nzSm='0' nzMd='0' nzLg='0' nzXl='10' nzXXL='14'>
+        <img class="cover" src="assets/cover.gif" alt="">
+    </div>
+    
+    <div nz-col nzXs="24" nzSm='18' nzMd='16' nzLg='12' nzXl='6' nzXXL='4' class="login">
+        <h1 class="title">OnMATH 4.0</h1>
+        <p style="text-align: center; margin-bottom: 24px;">Giải pháp học tập trực tuyến hiệu quả, nhanh chóng, chính
+            xác.</p>
+
+        <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Vui lòng nhập email đăng nhập">
+                    <nz-input-group nzPrefixIcon="user">
+                        <input #ipFocus type="email" nz-input formControlName="email" placeholder="Email Đăng Nhập" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Vui lòng nhập mật khẩu!">
+                    <nz-input-group nzPrefixIcon="lock">
+                        <input type="password" nz-input formControlName="password" placeholder="Mật Khẩu" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <label nz-checkbox formControlName="remember">
+                        <span>Nhớ tài khoản</span>
+                    </label>
+                    <a (click)="resetPassword()" class="login-form-forgot" class="login-form-forgot">Quên mật khẩu</a>
+                    <button nz-button class="login-form-button" [nzType]="'primary'"><i nz-icon nzType="login"
+                            nzTheme="outline"></i>ĐĂNG NHẬP</button>
+                    <div nz-row nzJustify="space-between" nzType="flex">
+                        <div nz-col nzSpan="24">
+                            <button nz-tooltip nzTooltipTitle="TẠO TÀI KHOẢN" nzTooltipPlacement="bottom"
+                                (click)="login=false" type='button' class='register' nz-button nzType="default"
+                                nzBlock><i nz-icon nzType="form" nzTheme="outline"></i>ĐĂNG KÍ</button>
+                        </div>
+                    </div>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </div>
+</div>
+<ng-template #register>
+    <app-register></app-register>
+</ng-template> -->
+<div nz-row class="login">
+    <div nz-col [nzSm]="13" [nzXs]="0" height="100vh">
+        <div style="height: 100%;" nz-row nzJustify="center" nzAlign="middle">
+            <img src="assets/login.gif" alt="">
+        </div>
+    </div>
+    <div nz-col [nzSm]="11" [nzXs]="24">
+        <div class="login-area" nz-row nzJustify="center" nzAlign="middle">
+            <ng-container *ngIf="login; else register">
+                <div nz-col nzXs="22" nzSm='18' nzMd='16' nzLg='14' nzXl='10' nzXXL='10'>
+                    <div class="login">
+                        <img class="logo" src="assets/logo.svg" alt="">
+
+                        <h1 class="title">OnMATH 4.0</h1>
+                        <p style="text-align: center; margin-bottom: 24px;">Giải pháp học tập trực tuyến hiệu quả, nhanh
+                            chóng,
+                            chính
+                            xác.</p>
+
+                        <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+                            <nz-form-item>
+                                <nz-form-control nzErrorTip="Vui lòng nhập email đăng nhập">
+                                    <nz-input-group nzPrefixIcon="user">
+                                        <input #ipFocus type="email" nz-input formControlName="email"
+                                            placeholder="Email Đăng Nhập" />
+                                    </nz-input-group>
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
+                                <nz-form-control nzErrorTip="Vui lòng nhập mật khẩu!">
+                                    <nz-input-group nzPrefixIcon="lock">
+                                        <input type="password" nz-input formControlName="password"
+                                            placeholder="Mật Khẩu" />
+                                    </nz-input-group>
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
+                                <nz-form-control>
+                                    <label nz-checkbox formControlName="remember">
+                                        <span>Nhớ tài khoản</span>
+                                    </label>
+                                    <a (click)="resetPassword()" class="login-form-forgot"
+                                        class="login-form-forgot">Quên mật
+                                        khẩu</a>
+
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
+                                <nz-form-control>
+                                    <button nz-button class="login-form-button" [nzType]="'primary'" nzBlock><i nz-icon
+                                            nzType="login" nzTheme="outline"></i>ĐĂNG NHẬP</button>
+
+                                    <button nz-tooltip nzTooltipTitle="TẠO TÀI KHOẢN" nzTooltipPlacement="bottom"
+                                        (click)="login=false" type='button' class='register' nz-button nzType="default"
+                                        nzBlock><i nz-icon nzType="form" nzTheme="outline"></i>ĐĂNG KÍ</button>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </form>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-template #register>
+                <div nz-col nzXs="22" nzSm='18' nzMd='18' nzLg='18' nzXl='17' nzXXL='16'>
+                    <app-register></app-register>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

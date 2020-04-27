@@ -1,0 +1,10 @@
+<nz-page-header-extra>
+    <div nz-popover [nzPopoverContent]="contentTemplate">
+        <nz-avatar nzIcon="user" style="margin-right: 10px;"></nz-avatar>
+        <b>Huynh</b>
+    </div>
+</nz-page-header-extra>
+
+<ng-template #contentTemplate>
+    <button nz-button nzType="danger"><a routerLink='login'>ĐĂNG XUẤT</a></button>
+</ng-template>
