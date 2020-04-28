@@ -5,6 +5,12 @@ p {
   margin-bottom: 20px;
 }
 
+p{
+  font-size: 18px;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 600;
+}
+
 div.content {
   & > div {
     border: #eee solid 1px;

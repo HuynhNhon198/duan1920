@@ -21,6 +21,7 @@ import { QuestionsComponent } from './pages/teacher/questions/questions.componen
 import { Type0Component } from './pages/teacher/create-question/type0/type0.component';
 import { Type1Component } from './pages/teacher/create-question/type1/type1.component';
 import { SafePipe } from './pipes/safe-url.pipe';
+import { DetailQuesionViewComponent } from './pages/teacher/questions/detail-quesion-view/detail-quesion-view.component';
 
 registerLocaleData(vi);
 
@@ -35,7 +36,8 @@ registerLocaleData(vi);
     QuestionsComponent,
     Type0Component,
     Type1Component,
-    SafePipe
+    SafePipe,
+    DetailQuesionViewComponent
   ],
   imports: [
     BrowserModule,

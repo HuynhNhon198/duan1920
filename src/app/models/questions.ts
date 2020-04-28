@@ -2,7 +2,7 @@ export interface IQuestions {
     type: typeQuestions.type;
     title: string;
     desc?: string;
-    in_class: string;
+    in_class: string[];
     do_type: typeQuestions.doType;
     do_time: number;
     time_start_for_live?: number;
