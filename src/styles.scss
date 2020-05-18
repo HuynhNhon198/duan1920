@@ -7,9 +7,11 @@ h1, h2, h3, h4, h5, h6, a, li{
 .ant-btn-primary {
     background-color: #536dfe;
     border-color: #536dfe;
-    box-shadow: 0 4px 20px rgba(32, 48, 130, 0.274);
+}
 
-    
+button.ant-btn-primary {
+
+    box-shadow: 0 4px 20px rgba(32, 48, 130, 0.274);
 }
 
 .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected, .ant-menu.ant-menu-dark .ant-menu-item-selected {
@@ -22,4 +24,12 @@ h1, h2, h3, h4, h5, h6, a, li{
 
 .ant-card-body {
     padding: 15px 24px;
+}
+
+td.center {
+    text-align: center;
+}
+
+td.right {
+    text-align: right;
 }

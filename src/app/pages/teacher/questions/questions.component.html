@@ -57,7 +57,8 @@
                     <ng-template #mota>
                         <p style="color: #9a9898;">Mô tả ...</p>
                     </ng-template>
-                    <nz-tag style="letter-spacing: 3px;" *ngFor="let class of item.in_class" [nzColor]="'#536dfe'">{{class}}</nz-tag>
+                    <nz-tag style="letter-spacing: 1px;" [nzColor]="'#536dfe'" title="Trạng Thái">BẢN NHÁP</nz-tag>
+                    <nz-tag style="letter-spacing: 3px;color: #444" nzColor='#f0f0f0' title="Thuộc Lớp" *ngFor="let class of item.in_class">{{class}}</nz-tag>
                 </nz-card>
                 <ng-template #actionSee>
                     <i (click)="openDetailView(item)" nz-icon nzType="line-chart"  nz-tooltip nzTooltipTitle="XEM CHI TIẾT" nzTooltipPlacement="bottom" ></i>

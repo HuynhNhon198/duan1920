@@ -12,6 +12,9 @@ import { registerLocaleData } from '@angular/common';
 import vi from '@angular/common/locales/vi';
 
 import { QuillModule } from 'ngx-quill';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+
+
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/login/register/register.component';
@@ -22,6 +25,9 @@ import { Type0Component } from './pages/teacher/create-question/type0/type0.comp
 import { Type1Component } from './pages/teacher/create-question/type1/type1.component';
 import { SafePipe } from './pipes/safe-url.pipe';
 import { DetailQuesionViewComponent } from './pages/teacher/questions/detail-quesion-view/detail-quesion-view.component';
+import { ClassesComponent } from './pages/teacher/classes/classes.component';
+import { QuestionViewComponent } from './components/question-view/question-view.component';
+import { CustomStringPipe } from './pipes/custom-string.pipe';
 
 registerLocaleData(vi);
 
@@ -37,7 +43,10 @@ registerLocaleData(vi);
     Type0Component,
     Type1Component,
     SafePipe,
-    DetailQuesionViewComponent
+    DetailQuesionViewComponent,
+    ClassesComponent,
+    QuestionViewComponent,
+    CustomStringPipe
   ],
   imports: [
     BrowserModule,
@@ -48,7 +57,8 @@ registerLocaleData(vi);
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    QuillModule.forRoot()
+    QuillModule.forRoot(),
+    DragDropModule
   ],
   providers: [{ provide: NZ_I18N, useValue: vi_VN }],
   bootstrap: [AppComponent]
