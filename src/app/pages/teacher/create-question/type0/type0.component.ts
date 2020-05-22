@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { HelperService } from 'src/app/services/helper.service';
+import { NzDrawerService } from 'ng-zorro-antd';
+import { NextStepComponent } from './next-step/next-step.component';
+import { IQuestions } from 'src/app/models/questions';
 @Component({
   selector: 'app-type0',
   templateUrl: './type0.component.html',
@@ -19,6 +22,9 @@ export class Type0Component implements OnInit {
   expand = false;
   list_questions: any[] = [];
   current_isTrue = false;
+  info: IQuestions = {} as IQuestions;
+  visible = true;
+  listOfItem = ['toán', 'văn'];
   modules = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -34,7 +40,8 @@ export class Type0Component implements OnInit {
   };
 
   constructor(
-    private helper: HelperService
+    private helper: HelperService,
+    private drawerService: NzDrawerService
   ) { }
 
   ngOnInit() {
@@ -109,5 +116,32 @@ export class Type0Component implements OnInit {
 
   drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.current_answers, event.previousIndex, event.currentIndex);
+  }
+
+  // nextStep(): void {
+  //   const drawerRef = this.drawerService.create<NextStepComponent, { list_questions: any[] }, string>({
+  //     nzTitle: 'Thông Tin Chung',
+  //     nzContent: NextStepComponent,
+  //     nzWidth: '25%',
+  //     nzContentParams: {
+  //       list_questions: this.list_questions
+  //     }
+  //   });
+
+  //   drawerRef.afterOpen.subscribe(() => {
+  //     console.log('Drawer(Component) open');
+  //   });
+  // }
+
+  addItem(input: HTMLInputElement): void {
+    const value = input.value;
+    if (value.length > 0) {
+      if (this.listOfItem.indexOf(value) === -1) {
+        this.listOfItem = [...this.listOfItem, input.value];
+      }
+    }
+  }
+  onChange(result: Date): void {
+    console.log('Selected Time: ', result.getTime());
   }
 }

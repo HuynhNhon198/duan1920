@@ -13,7 +13,7 @@ import vi from '@angular/common/locales/vi';
 
 import { QuillModule } from 'ngx-quill';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-
+import { NzAffixModule } from 'ng-zorro-antd/affix';
 
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -28,6 +28,7 @@ import { DetailQuesionViewComponent } from './pages/teacher/questions/detail-que
 import { ClassesComponent } from './pages/teacher/classes/classes.component';
 import { QuestionViewComponent } from './components/question-view/question-view.component';
 import { CustomStringPipe } from './pipes/custom-string.pipe';
+import { NextStepComponent } from './pages/teacher/create-question/type0/next-step/next-step.component';
 
 registerLocaleData(vi);
 
@@ -46,9 +47,11 @@ registerLocaleData(vi);
     DetailQuesionViewComponent,
     ClassesComponent,
     QuestionViewComponent,
-    CustomStringPipe
+    CustomStringPipe,
+    NextStepComponent
   ],
   imports: [
+    NzAffixModule,
     BrowserModule,
     AppRoutingModule,
     IconsProviderModule,
