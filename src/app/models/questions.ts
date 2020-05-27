@@ -8,7 +8,6 @@ export interface IQuestions {
     time_start_for_live?: number;
     questions: {
         q: string;
-        img?: string;
         answers: {
             answer: string;
             correct?: boolean;
