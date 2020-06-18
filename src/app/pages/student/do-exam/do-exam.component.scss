@@ -1,0 +1,39 @@
+nz-page-header.ant-page-header {
+  padding: 0 0 15px;
+}
+.list-answer {
+  height: 70vh;
+  overflow-y: scroll;
+  padding-right: 15px;
+
+  .ant-btn {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10px;
+    // color: #000;
+    &[ng-reflect-nz-type="default"] {
+      color: #000;
+    }
+    &[ng-reflect-nz-type="primary"] {
+      color: #fff;
+    }
+  }
+}
+.list {
+  padding: 15px 5px 0px 15px;
+  border-radius: 4px;
+  background: #f1f1f1;
+  max-height: 70vh;
+  overflow-y: scroll;
+  .question {
+    background: #fff;
+    padding: 8px 14px;
+    border-radius: 3px;
+    box-shadow: 0px 2px 20px #e6e6e6;
+    margin-bottom: 15px;
+  }
+  h4 {
+    color: #000;
+    font-size: 17px;
+  }
+}

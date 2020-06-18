@@ -1,33 +1,19 @@
-.empty {
-  img {
-    width: 60%;
-    margin: 0 auto;
-    display: block;
-  }
-  h1,
-  p {
-    text-align: center;
-  }
+nz-page-header.ant-page-header {
+  padding: 0 0 15px;
 }
 
-.site-page-header {
-  padding: 0 0 25px 0;
-  .header-title {
-    font-family: "Barlow", sans-serif;
-    color: #0a1d8a;
-    font-weight: 500;
+.q-actions {
+  i {
+    margin-right: 10px;
+    cursor: pointer;
+
+    &:hover {
+      color: blue;
+    }
   }
 }
-
-.list {
-  background: #f0f2f5;
-  padding: 30px;
-  height: 87%;
-  overflow-y: scroll;
-
-  .ant-card {
-    margin-bottom: 16px;
-    border-radius: 8px;
-    box-shadow: 4px 2px 20px #ececec;
-  }
+.editable-tag {
+  background: rgb(255, 255, 255);
+  border-style: dashed;
+  cursor: pointer;
 }

@@ -38,6 +38,15 @@
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Tôi Là </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
+                <nz-radio-group [(ngModel)]="role" nzButtonStyle="solid">
+                    <label nz-radio-button nzValue="student">Học Sinh</label>
+                    <label nz-radio-button nzValue="teacher">Giáo Viên</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
             <nz-form-control nz-row nzJustify="center">
                 <label nz-checkbox formControlName="agree" style="margin: 0 auto; display: table;">
                     <span>Tôi đồng ý với <a>Điều Khoản Sử Dụng</a> </span>

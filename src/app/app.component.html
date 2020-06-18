@@ -1,31 +1,40 @@
 <nz-layout class="app-layout">
-  <nz-sider nzTheme="dark" *ngIf="route!=='/login'" class="menu-sidebar"
-            nzCollapsible
-            nzWidth="226px"
-            nzBreakpoint="md"
-            [(nzCollapsed)]="isCollapsed"
-            [nzTrigger]="null">
+  <nz-sider nzTheme="dark" *ngIf="route!=='/login'" class="menu-sidebar" nzCollapsible nzWidth="226px" nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
     <div class="sidebar-logo">
       <a href="https://ng.ant.design/" target="_blank">
         <img src="../assets/logo.svg" alt="logo">
-        <h1>LUYENDE</h1>
+        <h1>LUYỆN ĐỀ</h1>
       </a>
     </div>
     <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
-      <li nz-submenu nzOpen nzTitle="Bài Tập" nzIcon="form">
+      <li nz-submenu nzOpen nzTitle="QUẢN LÝ ĐỀ" nzIcon="form">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/tao-de">TẠO ĐỀ</a>
+            <a routerLink="/danh-sach-cau-hoi">Thư Viện Câu Hỏi</a>
           </li>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/danh-sach-de">QUẢN LÝ ĐỀ</a>
+            <a routerLink="/danh-sach-de">Thư Viện Đề</a>
           </li>
         </ul>
       </li>
-      <li nz-submenu nzOpen nzTitle="Lớp Học" nzIcon="team">
+      <li nz-submenu nzOpen nzTitle="QUẢN LÝ LỚP" nzIcon="team">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/danh-sach-lop">QUẢN LÝ LỚP</a>
+            <a routerLink="/danh-sach-bai-kiem-tra">Các Bài Kiểm Tra</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/danh-sach-lop-hoc">Danh Sách Lớp Học</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzOpen nzTitle="HỌC SINH" nzIcon="team">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/student/danh-sach-lop-hoc">LỚP HỌC</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/student/danh-sach-bai-kiem-tra">CÁC BÀI KIỂM TRA</a>
           </li>
         </ul>
       </li>
@@ -35,10 +44,7 @@
     <nz-header *ngIf="route!=='/login'">
       <div class="app-header">
         <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
-            <i class="trigger"
-               nz-icon
-               [nzType]="isCollapsed ? 'right' : 'menu'"
-            ></i>
+          <i class="trigger" nz-icon [nzType]="isCollapsed ? 'right' : 'menu'"></i>
         </span>
         <app-header></app-header>
       </div>

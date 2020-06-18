@@ -1,0 +1,49 @@
+<nz-tabset>
+    <nz-tab [nzTitle]="titleTemplate1">
+        <ng-template #titleTemplate1>
+            <i nz-icon nzType="info-circle" nzTheme="outline"></i>Thông Tin Chung
+        </ng-template>
+        <nz-descriptions nzTitle="Lớp 5A" [nzColumn]="1">
+            <nz-descriptions-item nzTitle="Giáo Viên">Nguyễn Văn A</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="SĐT">0328803015</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Thuộc Trường">
+                THPT ABC, Hà Nội
+            </nz-descriptions-item>
+        </nz-descriptions>
+        <nz-divider style="margin: 15px 0;"></nz-divider>
+        <div nz-row nzJustify='space-between'>
+            <h2 style="    width: fit-content;
+        border-bottom: #2196F3 solid 2px;">Các Bài Kiểm Tra:</h2>
+        </div>
+        <div class="list">
+            <nz-table nzBordered [nzData]="[{}]">
+                <thead>
+                    <tr>
+                        <th nzWidth='50px'>STT</th>
+                        <th>Tiêu Đề</th>
+                        <th>Thời Gian</th>
+                        <th>Trạng Thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of exams; let i=index">
+                        <td class="center">{{i+1}}</td>
+                        <td><a routerLink='/student/kiem-tra/{{data.id}}'><b>{{ data.title }}</b></a></td>
+                        <td>{{data.time_start * 1000 | date: 'HH:mm - dd/MM/y'}}</td>
+                        <td>
+                            <nz-tag nzMode="checkable" [nzChecked]="true">
+                                {{data.status | customString: 'StatusExam' | uppercase}}
+                            </nz-tag>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </nz-tab>
+    <!-- <nz-tab [nzTitle]="titleTemplate3">
+        <ng-template #titleTemplate3>
+            <i nz-icon nzType="user" nzTheme="outline"></i>Liên Lạc
+        </ng-template>
+        <app-list-students></app-list-students>
+    </nz-tab> -->
+</nz-tabset>

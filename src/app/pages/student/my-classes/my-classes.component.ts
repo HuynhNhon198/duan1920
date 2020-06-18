@@ -3,32 +3,34 @@ import { HelperService } from 'src/app/services/helper.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-classes',
-  templateUrl: './classes.component.html',
-  styleUrls: ['./classes.component.scss']
+  selector: 'app-my-classes',
+  templateUrl: './my-classes.component.html',
+  styleUrls: ['./my-classes.component.scss']
 })
-export class ClassesComponent implements OnInit {
+export class MyClassesComponent implements OnInit {
+
   @ViewChild('inputAddClass') ipNewClass: ElementRef;
   classes = [
     {
       name: 'Lớp 5A',
       code: 'ZRCXT',
-      students_length: 30,
+      teacher: 'Nguyễn Văn A',
       desc: '',
     },
     {
       name: 'Lớp 6A',
       code: 'ZRRXT',
-      students_length: 50,
+      teacher: 'Nguyễn Văn B',
       desc: '',
     },
     {
       name: 'Lớp 7B',
       code: 'DSCXT',
-      students_length: 40,
+      teacher: 'Nguyễn Thị C',
       desc: '',
     }
   ];
+  codeToEnroll = '';
   isVisible = false;
   newClass = {
     name: '',
@@ -43,7 +45,7 @@ export class ClassesComponent implements OnInit {
   }
 
   openClass(id: string) {
-    this.router.navigate(['lop-hoc/' + id]);
+    this.router.navigate(['student/lop-hoc/' + id]);
   }
 
   openModalNewClass() {
@@ -60,4 +62,5 @@ export class ClassesComponent implements OnInit {
       this.helper.createMessage('Vui lòng nhập tên lớp trước khi tạo', 'error', 2000);
     }
   }
+
 }

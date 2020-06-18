@@ -1,0 +1,64 @@
+<nz-page-header [nzGhost]="false">
+    <nz-page-header-title>
+        <h3>
+            <i nz-icon nzType="exception" nzTheme="outline"></i> &nbsp; DANH SÁCH
+            BÀI KIỂM TRA
+        </h3>
+    </nz-page-header-title>
+    <nz-page-header-extra>
+        <button (click)="createBasicNotification(template)" nz-button nzType="primary" title="Tạo đề kiểm tra mới"><i
+                nz-icon nzType="plus"></i></button>
+    </nz-page-header-extra>
+    <!-- <nz-page-header-content>
+        <nz-descriptions nzSize="small" [nzColumn]="3">
+            <nz-descriptions-item nzTitle="Created" [nzSpan]="1">Lili Qu</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Association" [nzSpan]="1"><a>421421</a></nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">2017-01-10</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Effective Time" [nzSpan]="1">2017-10-10</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Remarks" [nzSpan]="2">
+                Gonghu Road, Xihu District, Hangzhou, Zhejiang, China
+            </nz-descriptions-item>
+        </nz-descriptions>
+    </nz-page-header-content> -->
+</nz-page-header>
+<div class="list">
+    <nz-table nzBordered [nzData]="[{}]">
+        <thead>
+            <tr>
+                <th nzWidth='50px'>STT</th>
+                <th>Tiêu Đề</th>
+                <th>Lớp</th>
+                <th>Trạng Thái</th>
+                <th>Thời Gian</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of exams; let i=index">
+                <td class="center">{{i+1}}</td>
+                <td><a routerLink='/bai-kiem-tra/{{data.id}}'><b>{{ data.title }}</b></a></td>
+                <td>{{ data.of_class }}</td>
+                <td>
+                    <nz-tag nzMode="checkable" [nzChecked]="true">
+                        {{data.status | customString: 'StatusExam' | uppercase}}
+                    </nz-tag>
+                </td>
+                <td>
+                    {{data.time_start*1000 | date: 'hh:mm dd/MM/y'}}
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>
+
+<ng-template #template>
+    <div class="ant-notification-notice-content">
+        <div class="ant-notification-notice-with-icon">
+            <span class="ant-notification-notice-icon"><i nz-icon nzType="smile"
+                    style="color: rgb(16, 142, 233);"></i></span>
+            <div class="ant-notification-notice-message">Hướng Dẫn</div>
+            <div class="ant-notification-notice-description">
+                Để thêm bài kiểm tra bạn vào trang chi tiết của lớp học rồi chọn <b>'Thêm Bài Kiểm Tra'</b> nhé.
+            </div>
+        </div>
+    </div>
+</ng-template>

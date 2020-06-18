@@ -1,0 +1,87 @@
+<nz-tabset>
+    <nz-tab [nzTitle]="titleTemplate1">
+        <ng-template #titleTemplate1>
+            <i nz-icon nzType="newExam-circle" nzTheme="outline"></i>Thông Tin Chung
+        </ng-template>
+        <nz-descriptions nzTitle="Lớp 5A" [nzColumn]="1">
+            <nz-descriptions-item nzTitle="Giáo Viên">Nguyễn Văn A</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="SĐT">0328803015</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Thuộc Trường">
+                THPT ABC, Hà Nội
+            </nz-descriptions-item>
+        </nz-descriptions>
+        <nz-divider style="margin: 15px 0"></nz-divider>
+        <div nz-row nzJustify='space-between'>
+            <h2 style="    width: fit-content;
+        border-bottom: #2196F3 solid 2px;">Các Đợt Kiểm Tra:</h2>
+            <button (click)="visible=true" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Thêm Bài Kiểm
+                Tra</button>
+        </div>
+        <div class="list">
+            <nz-table nzBordered [nzData]="[{}]">
+                <thead>
+                    <tr>
+                        <th nzWidth='50px'>STT</th>
+                        <th>Tiêu Đề</th>
+                        <th>Trạng Thái</th>
+                        <th>Thời Gian</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of exams; let i=index">
+                        <td class="center">{{i+1}}</td>
+                        <td><a routerLink='/bai-kiem-tra/{{data.id}}'><b>{{ data.title }}</b></a></td>
+                        <td>
+                            <nz-tag nzMode="checkable" [nzChecked]="true">
+                                {{data.status | customString: 'StatusExam' | uppercase}}
+                            </nz-tag>
+                        </td>
+                        <td>
+                            {{data.time_start*1000 | date: 'hh:mm dd/MM/y'}}
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </nz-tab>
+    <nz-tab [nzTitle]="titleTemplate3">
+        <ng-template #titleTemplate3>
+            <i nz-icon nzType="user" nzTheme="outline"></i>Danh Sách Học Sinh
+        </ng-template>
+        <app-list-students></app-list-students>
+    </nz-tab>
+</nz-tabset>
+
+<nz-drawer nzWidth="30%" nzMaskClosable='false' [nzVisible]="visible" nzPlacement="right" nzTitle="Tạo Bài Kiểm Tra"
+    (nzOnClose)="close()">
+    <nz-list>
+        <nz-list-item>
+            <textarea autofocus nz-input [(ngModel)]="newExam.title" placeholder="Tiêu Đề Bài Kiểm Tra"
+                nzAutosize></textarea>
+        </nz-list-item>
+        <nz-list-item>
+            <textarea nz-input [(ngModel)]="newExam.desc" placeholder="Mô tả"
+                [nzAutosize]="{ minRows: 3, maxRows: 6 }"></textarea>
+        </nz-list-item>
+
+        <nz-list-item>
+            <nz-input-number style="width: 60%; margin-right: 10px" [(ngModel)]="newExam.duration" [nzPrecision]="0"
+                nzPlaceHolder="Thời Gian Làm Bài (Phút)">
+            </nz-input-number>
+            <nz-date-picker style="width: 100%;" [nzShowTime]="{ nzFormat: 'HH:mm' }" nzFormat="HH:mm dd/MM/yyyy"
+                nzPlaceHolder="Thời Gian Bắt Đầu" [(ngModel)]="newExam.time_start" (ngModelChange)="onChange($event)">
+            </nz-date-picker>
+        </nz-list-item>
+    </nz-list>
+    <nz-divider></nz-divider>
+    <h3>CHỌN ĐỀ</h3>
+    <nz-input-group [nzSuffix]="suffixIconSearch">
+        <input type="text" nz-input placeholder="Tìm Kiếm Theo Tên Đề Kiểm Tra" />
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+        <i nz-icon nzType="search"></i>
+    </ng-template>
+    <div nz-row nzJustify='end' style="margin-top: 20px;">
+        <button nz-button nzType="primary"><i nz-icon nzType="tick"></i>LƯU</button>
+    </div>
+</nz-drawer>

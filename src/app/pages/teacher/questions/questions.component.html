@@ -1,80 +1,143 @@
-<div *ngIf="example.length === 0; else list" nz-row nzJustify='center' nzAlign='middle' class="empty">
-    <div nz-col nzSm='20' nzXs='24'>
-        <h1>🙄 CHƯA CÓ ĐỀ NÀO ĐƯỢC TẠO 🤨</h1>
-        <p>
-            <a routerLink='/tao-de' nz-button nzType="primary"><i nz-icon nzType="plus"></i>TẠO ĐỀ THI MỚI</a>
-            <img src="assets/404.svg" alt="">
-        </p>
-    </div>
-</div>
+<!-- <nz-table [nzData]="[{}]" [nzPageSize]="10">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Câu Hỏi</th>
+            <th>Thời Gian Tạo</th>
+            <th>Tác Vụ</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+    </tbody>
+</nz-table> -->
+<nz-page-header [nzGhost]="false">
+    <nz-page-header-title>
+        <h3>
+            <i nz-icon nzType="exception" nzTheme="outline"></i> &nbsp; DANH SÁCH
+            CÂU HỎI CỦA BẠN
+        </h3>
+    </nz-page-header-title>
+    <nz-page-header-extra>
+        <button nz-button nzType="primary" title="Tạo câu hỏi mới" (click)="open()"><i nz-icon
+                nzType="plus"></i></button>
+    </nz-page-header-extra>
+    <!-- <nz-page-header-content>
+        <nz-descriptions nzSize="small" [nzColumn]="3">
+            <nz-descriptions-item nzTitle="Created" [nzSpan]="1">Lili Qu</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Association" [nzSpan]="1"><a>421421</a></nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">2017-01-10</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Effective Time" [nzSpan]="1">2017-10-10</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Remarks" [nzSpan]="2">
+                Gonghu Road, Xihu District, Hangzhou, Zhejiang, China
+            </nz-descriptions-item>
+        </nz-descriptions>
+    </nz-page-header-content> -->
+</nz-page-header>
+<nz-empty *ngIf="listQuestions.length == 0; else list"></nz-empty>
 <ng-template #list>
-    <nz-page-header class="site-page-header">
-        <nz-page-header-title class="header-title"><i nz-icon nzType="exception" nzTheme="outline"></i> &nbsp; DANH SÁCH
-            ĐỀ THI CỦA BẠN</nz-page-header-title>
-        <nz-page-header-extra>
-            <a routerLink='/tao-de' nz-button nzType="primary" title="TẠO ĐỀ THI MỚI"><i nz-icon nzType="plus"></i></a>
-        </nz-page-header-extra>
+    <nz-table class="border-table" nzBordered [nzData]="[{}]">
+        <thead>
+            <tr>
+                <th nzWidth='50px'></th>
+                <th>Câu Hỏi</th>
+                <th nzWidth='300px'>Tags</th>
+                <th nzWidth='150px'>Thời Gian Tạo</th>
+                <th nzWidth='100px'>Tác Vụ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor='let data of listQuestions; let i = index'>
+                <tr>
+                    <td class="center" [(nzExpand)]="data['expand']"></td>
+                    <td>
+                        <div [innerHTML]="data.question | safeHtml"></div>
+                    </td>
+                    <td>
+                        <nz-tag nzMode="checkable" [nzChecked]="true" *ngFor="let tag of data.tags">#{{tag}}</nz-tag>
+                    </td>
+                    <td>{{ data.ctime*1000 | date: 'dd/MM/y' }}</td>
+                    <td class="q-actions center">
+                        <i nz-icon nzType="edit" nzTheme="outline" (click)="editQuestion(data)"></i>
+                        <i nz-icon nzType="delete" nzTheme="outline" nz-popconfirm nzPopconfirmTitle="Xóa Câu Hỏi Này?"
+                            nzPopconfirmPlacement="bottom" (nzOnConfirm)="removeQuestion(i)"></i>
+                    </td>
+                </tr>
+                <tr [nzExpand]="data['expand']">
+                    <nz-table class=" nest-table" #innerTable [nzData]="data.answers" nzSize="middle"
+                        [nzShowPagination]="false">
+                        <thead>
+                            <tr>
+                                <th class="center" nzWidth='50px'>Đúng</th>
+                                <th>Câu Trả Lời</th>
+                                <th nzWidth='100px'>Status</th>
+                            </tr>
+                        </thead>
+        <tbody>
+            <tr *ngFor="let item of innerTable.data; let i = index">
+                <td class="center"><label nz-checkbox [(ngModel)]="item.correct"></label></td>
+                <td><b>{{i +1 | customString: 'IndexAnswer'}}</b> &nbsp;{{item.answer}}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </nz-table>
+    </tr>
+    </ng-container>
+    </tbody>
+    </nz-table>
+</ng-template>
 
-        <nz-page-header-content>
-            <div nz-row [nzGutter]="16" nzJustify='space-between'>
-                <div nz-col nzSm='16' nzXs='24'>
-                    <div nz-row [nzGutter]="16">
-                        <div nz-col nzSm='8' nzXs='24'>
-                            <nz-select style="width: 100%;" nzMode="multiple" nzPlaceHolder="Lọc Theo Lớp"
-                                [(ngModel)]="class_selected" (ngModelChange)='selectClass()'>
-                                <nz-option nzLabel="1A" nzValue="1A"></nz-option>
-                                <nz-option nzLabel="1B" nzValue="1B"></nz-option>
-                                <nz-option nzLabel="1C" nzValue="1C"></nz-option>
-                            </nz-select>
-                        </div>
-                        <div nz-col nzSm='8' nzXs='24'>
-                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Lọc Theo Chủ Đề">
-                                <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
-                                <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
-                                <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
-                            </nz-select>
-                        </div>
-                    </div>
+<nz-drawer [nzClosable]="false" [nzVisible]="visible" nzWidth='40%' nzPlacement="right"
+    [nzTitle]="new?'TẠO CÂU HỎI MỚI':'CHỈNH SỬA CÂU HỎI'" (nzOnClose)="close()">
+    <h3>TAGS: </h3>
+    <nz-tag *ngFor="let tag of question.tags; let i = index" nzMode="closeable" (nzAfterClose)="handleClose(tag)">
+        {{ tag }}
+    </nz-tag>
+    <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()"> <i nz-icon
+            nzType="plus"></i> Tag Mới </nz-tag>
+    <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue"
+        style="width: 78px;" (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()" />
+    <nz-divider></nz-divider>
+    <h3>CÂU HỎI: </h3>
+    <quill-editor [styles]="{height: '150px', 'margin-bottom': '10px'}" [(ngModel)]='question.q' [modules]="modules"
+        theme="snow">
+    </quill-editor>
+    <!-- <button nz-button nzType="primary" (click)="test()" style="margin-top: 20px;">TEST</button>
+    <div id="test">
 
+    </div> -->
 
-                </div>
-                <div nz-col nzSm='8' nzXs='24'>
-                    <nz-input-group [nzSuffix]="suffixIconSearch">
-                        <input type="text" nz-input placeholder="Tìm kiếm đề thi" />
-                    </nz-input-group>
-                    <ng-template #suffixIconSearch>
-                        <i nz-icon nzType="search"></i>
-                    </ng-template>
-                </div>
-            </div>
-        </nz-page-header-content>
-    </nz-page-header>
-    <div class="list">
-        <div nz-row [nzGutter]="16">
-            <div *ngFor="let item of example" nz-col nzXs="24" nzSm='12' nzMd='12' nzLg='8' nzXl='6' nzXXL='4'>
-                <nz-card [nzTitle]="item.title" [nzActions]="[actionSee, actionEdit, actionSetting]">
-                    <p *ngIf="item.desc && item.desc.length > 0; else mota">item.desc</p>
-                    <ng-template #mota>
-                        <p style="color: #9a9898;">Mô tả ...</p>
-                    </ng-template>
-                    <nz-tag style="letter-spacing: 1px;" [nzColor]="'#536dfe'" title="Trạng Thái">BẢN NHÁP</nz-tag>
-                    <nz-tag style="letter-spacing: 3px;color: #444" nzColor='#f0f0f0' title="Thuộc Lớp" *ngFor="let class of item.in_class">{{class}}</nz-tag>
-                </nz-card>
-                <ng-template #actionSee>
-                    <i (click)="openDetailView(item)" nz-icon nzType="line-chart"  nz-tooltip nzTooltipTitle="XEM CHI TIẾT" nzTooltipPlacement="bottom" ></i>
-                </ng-template>
-                <ng-template #actionEdit>
-                    <i nz-icon nzType="edit"  nz-tooltip nzTooltipTitle="SỬA" nzTooltipPlacement="bottom"></i>
-                </ng-template>
-                <ng-template #actionSetting >
-                    <i nz-popconfirm nzPopconfirmTitle="Xóa đề thi này ?" [nzIcon]="iconTpl"
-                        nzPopconfirmPlacement="bottom" nz-icon nzType="delete" nz-tooltip nzTooltipTitle="XÓA ĐỀ" nzTooltipPlacement="bottom" ></i>
-
-                    <ng-template #iconTpl  >
-                        <i nz-icon nzType="stop" style="color: rgba(155, 16, 16, 0.925);"></i>
-                    </ng-template>
-                </ng-template>
-            </div>
+    <h3>CÂU TRẢ LỜI:</h3>
+    <textarea #answerView nz-input placeholder="Nhập câu trả lời ở đây, sau đó bấm nút LƯU ở dưới"
+        [nzAutosize]="{ minRows: 2, maxRows: 4 }" [(ngModel)]="current_answer"></textarea>
+    <div nz-row nzJustify='end' style="margin: 10px auto;">
+        <div>
+            <label nz-checkbox [(ngModel)]="isTrue">Đây Là Đáp Án Đúng</label>
+            <a nz-button nzType="default" (click)="addAnswer()"><i nz-icon nzType="plus" nzTheme="outline"></i>LƯU</a>
         </div>
     </div>
-</ng-template>
+    <ng-container *ngIf="question.answers.length > 0">
+        <nz-table nzBordered [nzData]="[{}]" [nzFrontPagination]="false" [nzShowPagination]="false">
+            <thead>
+                <tr>
+                    <th>NỘI DUNG</th>
+                    <th nzWidth="70px">ĐÚNG</th>
+                    <th nzWidth="70px">XÓA</th>
+                </tr>
+            </thead>
+            <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                <tr *ngFor="let data of question.answers; let i = index" cdkDrag style="cursor: grab">
+                    <td>{{ data.answer }}</td>
+                    <td class="center"><label nz-checkbox [(ngModel)]="data.correct"></label></td>
+                    <td class="center"><i nz-icon nzType="delete" (click)="deleteAnswer(i)"
+                            style="color: brown; cursor: pointer;" nzTheme="outline"></i></td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <div nz-row nzJustify='end' style="margin: 10px auto;">
+            <button nz-button nzType="primary" (click)="addQuestion(question.id)">
+                <i nz-icon nzType="check" nzTheme="outline"></i>LƯU CÂU HỎI
+            </button>
+        </div>
+    </ng-container>
+</nz-drawer>

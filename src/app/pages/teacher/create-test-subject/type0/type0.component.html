@@ -1,3 +1,12 @@
+<div nz-row nzJustify='space-between'>
+    <input autofocus nz-input style="width: 50%;" placeholder="Nhập tiêu đề của đề này tại đây" [(ngModel)]="title" />
+    <div>
+        Công Khai (thư viện chung): <nz-switch [(ngModel)]="public"></nz-switch>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button nzType="primary"><i nz-icon nzType="save" nzTheme="outline"></i>Lưu</button>
+    </div>
+</div>
+<nz-divider></nz-divider>
 <div nz-row nzGlutter='20' class="row">
     <div nz-col nzSm='12' nzXs='24'>
         <h3>CÂU HỎI: </h3>
@@ -99,63 +108,3 @@
         </ng-template>
     </div>
 </div>
-
-<div class="next-step">
-    <button (click)="visible = true" nz-button nzType="primary"><i nz-icon nzType="setting" nzTheme="outline"></i>THÔNG
-        TIN CHUNG</button>
-</div>
-
-
-<nz-drawer [nzVisible]="visible" [nzWidth]="500" [nzClosable]="false" (nzOnClose)="visible = false">
-    <h3>THÔNG TIN CHUNG</h3>
-    <nz-list>
-        <nz-list-item>
-            <textarea autofocus nz-input [(ngModel)]="info.title" placeholder="Tiêu đề" nzAutosize></textarea>
-        </nz-list-item>
-        <nz-list-item>
-            <textarea nz-input [(ngModel)]="info.desc" placeholder="Mô tả"
-                [nzAutosize]="{ minRows: 3, maxRows: 6 }"></textarea>
-        </nz-list-item>
-        <nz-list-item>
-            <nz-select style="width: 100%;" nzMode="multiple" nzPlaceHolder="Thuộc Lớp" [(ngModel)]="info.in_class">
-                <nz-option nzLabel="1A" nzValue="1A"></nz-option>
-                <nz-option nzLabel="1B" nzValue="1B"></nz-option>
-                <nz-option nzLabel="1C" nzValue="1C"></nz-option>
-            </nz-select>
-        </nz-list-item>
-        <nz-list-item>
-            <nz-input-number style="width: 100%;" [(ngModel)]="info.do_time" [nzMin]="1" [nzStep]="1"
-                nzPlaceHolder="Thời Gian Làm Bài (phút)"></nz-input-number>
-            <nz-select style="width: 100%;" nzShowSearch nzAllowClear [nzDropdownRender]="renderTemplate" nzPlaceHolder="Chọn Chủ Đề">
-                <nz-option *ngFor="let item of listOfItem" [nzLabel]="item | uppercase" [nzValue]="item"></nz-option>
-            </nz-select>
-            <ng-template #renderTemplate>
-                <nz-divider style="margin: 3px;"></nz-divider>
-                <div class="container">
-                    <input style="width: 60%;
-                      margin: 5px;" type="text" nz-input #inputElement />
-                    <a class="add-item" (click)="addItem(inputElement)"><i nz-icon nzType="plus"></i>Thêm</a>
-                </div>
-            </ng-template>
-        </nz-list-item>
-        <nz-list-item>
-            <nz-select nzPlaceHolder="Hình Thức Làm Bài" [(ngModel)]="info.do_type">
-                <nz-option nzLabel="Thi Trực Tuyến" nzValue="live"></nz-option>
-                <nz-option nzLabel="Luyện Tập" nzValue="exercise"></nz-option>
-            </nz-select>
-    
-            <div *ngIf="info.do_type === 'live'">
-                <nz-date-picker style="width: 100%;" [nzShowTime]="{ nzFormat: 'HH:mm' }" nzFormat="HH:mm dd/MM/yyyy"
-                    nzPlaceHolder="Thời Gian Bắt Đầu" [(ngModel)]="info.time_start_for_live" (ngModelChange)="onChange($event)">
-                </nz-date-picker>
-            </div>
-        </nz-list-item>
-    </nz-list>
-
-    <div nz-row nzJustify='end'>
-        <div nz-col>
-            <button nz-button nzType="primary" [disabled]='list_questions.length === 0' [title]='list_questions.length === 0? "Vui lòng thêm câu hỏi trước khi lưu đề":"Tạo đề"'><i nz-icon nzType="save"></i>LƯU</button>
-        </div>
-    </div>
-    
-</nz-drawer>

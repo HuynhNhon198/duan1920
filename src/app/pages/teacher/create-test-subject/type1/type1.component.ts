@@ -10,15 +10,15 @@ import { IQuestions } from 'src/app/models/questions';
 })
 export class Type1Component implements OnInit {
   file: File;
-  link_google_drive: string;
-  // 'https://drive.google.com/file/d/1DL5pqvIJGbTlO5Ws0u0vv-2niVSheFGv/preview';
+  // link_google_drive: string;
+  link_google_drive = 'https://drive.google.com/file/d/1DL5pqvIJGbTlO5Ws0u0vv-2niVSheFGv/preview';
   linkInInput = '';
   questions = {
 
   } as IQuestions;
   QLength = 0;
   answers: string[] = [];
-
+  public = true;
   listOfItem = ['toán', 'văn'];
   index = 0;
 

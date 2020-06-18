@@ -1,0 +1,55 @@
+<nz-page-header class="site-page-header" (nzBack)="onBack()" nzBackIcon
+    [nzTitle]="exam.title + ' - Lớp' + exam.of_class">
+</nz-page-header>
+<nz-descriptions [nzColumn]="2">
+    <nz-descriptions-item nzTitle="Bắt Đầu Lúc"> <a nz-button nzSize='small'
+            nzType="primary"><b>{{exam.time_start * 1000 | date: 'HH:mm - dd/MM/y'}}</b></a>
+    </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Mô Tả">
+        {{exam.desc}}
+    </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Thời Gian Làm Bài">{{exam.duration}} phút</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Đề"><a routerLink='/de/{{exam.test_subject.id}}' target="_blank"
+            rel="noopener noreferrer">{{exam.test_subject.title}}</a> - {{exam.test_subject.questions_length}} Câu
+    </nz-descriptions-item>
+</nz-descriptions>
+<nz-divider style="margin: 15px 0"></nz-divider>
+<h3><i nz-icon nzType="snippets" nzTheme="outline"></i> KẾT QUẢ LÀM BÀI</h3>
+<ng-container *ngIf="exam.students_statis.length > 0; else empty">
+
+    <nz-table nzBordered [nzData]="[{}]">
+        <thead>
+            <tr>
+                <th nzWidth='50px'>STT</th>
+                <th>Họ Và Tên</th>
+                <th>Email</th>
+                <th>Mã</th>
+                <th>Số Câu Đúng</th>
+                <th>Số Câu Sai</th>
+                <th>Điểm</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of exam.students_statis; let i=index">
+                <td class="center">{{i+1}}</td>
+                <td style="text-transform: capitalize;"><b>{{ data.name }}</b></td>
+                <td>{{data.email}}</td>
+                <td>{{data.id}}</td>
+                <td>{{data.correct}}</td>
+                <td>{{data.incorrect}}</td>
+                <td><b>{{((data.correct / exam.test_subject.questions_length)*10).toFixed(1)}}</b></td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+</ng-container>
+<ng-template #empty>
+    <nz-empty style="margin-top: 100px"
+        nzNotFoundImage="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+        [nzNotFoundContent]="contentTpl">
+        <ng-template #contentTpl>
+            <h3> CHƯA CÓ DỮ LIỆU LÀM BÀI CỦA HỌC SINH </h3>
+        </ng-template>
+
+    </nz-empty>
+</ng-template>

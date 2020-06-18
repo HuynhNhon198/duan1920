@@ -15,8 +15,7 @@
         </nz-upload>
         <h3 style="margin-top: 0.6em;">HOẶC</h3>
         <nz-input-group [nzPrefix]="prefixIcon" [nzSuffix]="suffixButton" class="link-drive">
-            <input type="text" [(ngModel)]="linkInInput" nz-input
-                placeholder="Link share của file từ google drive" />
+            <input type="text" [(ngModel)]="linkInInput" nz-input placeholder="Link share của file từ google drive" />
         </nz-input-group>
         <ng-template #prefixIcon><i style="font-size: 22px; margin-top: 5px;" nz-icon nzType="chrome"></i></ng-template>
         <ng-template #suffixButton>
@@ -27,22 +26,27 @@
     </div>
 </div>
 <ng-template #readLink>
-    <div nz-row nzJustify="space-between" style="height: 93%;">
+    <div nz-row nzJustify="space-between" style="height: 85vh;">
         <div nz-col [nzSm]="13" [nzXs]="24">
             <iframe [src]="link_google_drive | safe" width="100%" height="100%"></iframe>
         </div>
         <div nz-col [nzSm]="10" [nzXs]="24" class="edition">
-            <h2>Thông Tin Chung</h2>
-            <!-- <div nz-row nzJustify="end"> -->
+            <div nz-row nzJustify='space-between'>
+                <h2>Thông Tin Chung </h2>
+                <i (click)="link_google_drive = undefined" style="font-size: 16px; cursor: pointer;margin-top: 6px"
+                    title="Tạo đề mới" nz-icon nzType="reload" nzTheme="outline"></i>
+            </div>
             <div>
-                <textarea nz-input [(ngModel)]="questions.title" placeholder="Tiêu đề" nzAutosize></textarea>
+                <textarea autofocus nz-input [(ngModel)]="questions.title" placeholder="Tiêu đề" nzAutosize></textarea>
             </div>
             <div>
                 <textarea nz-input [(ngModel)]="questions.desc" placeholder="Mô tả"
                     [nzAutosize]="{ minRows: 3, maxRows: 6 }"></textarea>
             </div>
-            <!-- </div> -->
-            <div nz-row nzJustify="space-between">
+            <h3>Công Khai (xuất hiện trên thư viện chung) &nbsp; <nz-switch [(ngModel)]="public"></nz-switch>
+            </h3>
+            <nz-divider></nz-divider>
+            <!-- <div nz-row nzJustify="space-between">
                 <div nz-col [nzSm]="7" [nzXs]="24">
                     <nz-input-number style="width: 100%;" [(ngModel)]="questions.do_time" [nzMin]="1" [nzStep]="1"
                         nzPlaceHolder="Thời Gian Làm Bài (phút)"></nz-input-number>
@@ -55,17 +59,19 @@
                     </nz-select>
                 </div>
                 <div nz-col [nzSm]="8" [nzXs]="24" class="cate">
-                    <nz-select nzShowSearch nzAllowClear [nzDropdownRender]="renderTemplate" nzPlaceHolder="Chọn Chủ Đề">
-                        <nz-option *ngFor="let item of listOfItem" [nzLabel]="item | uppercase" [nzValue]="item"></nz-option>
-                      </nz-select>
-                      <ng-template #renderTemplate>
+                    <nz-select nzShowSearch nzAllowClear [nzDropdownRender]="renderTemplate"
+                        nzPlaceHolder="Chọn Chủ Đề">
+                        <nz-option *ngFor="let item of listOfItem" [nzLabel]="item | uppercase" [nzValue]="item">
+                        </nz-option>
+                    </nz-select>
+                    <ng-template #renderTemplate>
                         <nz-divider style="margin: 3px;"></nz-divider>
                         <div class="container">
-                          <input style="width: 60%;
+                            <input style="width: 60%;
                           margin: 5px;" type="text" nz-input #inputElement />
-                          <a class="add-item" (click)="addItem(inputElement)"><i nz-icon nzType="plus"></i>Thêm</a>
+                            <a class="add-item" (click)="addItem(inputElement)"><i nz-icon nzType="plus"></i>Thêm</a>
                         </div>
-                      </ng-template>
+                    </ng-template>
                 </div>
             </div>
             <div nz-row nzJustify="space-between">
@@ -78,12 +84,12 @@
                 </div>
 
                 <div nz-col [nzSm]="12" [nzXs]="24" *ngIf="questions.do_type === 'live'">
-                    <nz-date-picker style="width: 100%;" [nzShowTime]="{ nzFormat: 'HH:mm' }" nzFormat="HH:mm dd/MM/yyyy"
-                        nzPlaceHolder="Thời Gian Bắt Đầu" [(ngModel)]="questions.time_start_for_live"
-                        (ngModelChange)="onChange($event)"></nz-date-picker>          
+                    <nz-date-picker style="width: 100%;" [nzShowTime]="{ nzFormat: 'HH:mm' }"
+                        nzFormat="HH:mm dd/MM/yyyy" nzPlaceHolder="Thời Gian Bắt Đầu"
+                        [(ngModel)]="questions.time_start_for_live" (ngModelChange)="onChange($event)"></nz-date-picker>
                 </div>
-            </div>
-            
+            </div> -->
+
             <h2>Đặt Đáp Án Đúng Cho <nz-input-number style="width: 12%;" [(ngModel)]="QLength" [nzMin]="0" [nzStep]="1"
                     (ngModelChange)='changeQLength()'></nz-input-number> Câu</h2>
 

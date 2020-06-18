@@ -1,0 +1,47 @@
+<nz-page-header class="site-page-header" (nzBack)="onBack()" nzBackIcon [nzTitle]="test_subject.name">
+</nz-page-header>
+<div>
+    <nz-descriptions [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Chủ Đề">{{test_subject.categories.toString() | uppercase}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Tags">
+            <nz-tag nzMode="checkable" [nzChecked]="true" *ngFor="let item of test_subject.tags">#{{item | uppercase}}
+            </nz-tag>
+        </nz-descriptions-item>
+    </nz-descriptions>
+    <nz-divider style="margin: 15px 0"></nz-divider>
+    <div nz-row>
+        <div nz-col nzSpan='22'>
+            <div class="list">
+                <div class="question" *ngFor="let item of test_subject.questions; let i = index" id="{{item.id}}">
+                    <!-- <app-question-view [question_dom]="item.question" [index]='i+1'></app-question-view> -->
+                    <div nz-row nzJustify='space-between' class="title">
+                        <div>
+                            <h4>CÂU {{i+1}}: </h4>
+                        </div>
+
+                    </div>
+                    <div [innerHTML]="item.question | safeHtml"></div>
+                    <nz-list style="border-top: #085db41f dashed 2px">
+                        <nz-list-item *ngFor="let a of item.answers; let ind = index">
+                            <div>
+                                <!-- <label nz-checkbox [(ngModel)]="a['choose']" (ngModelChange)='choose(i)'>
+                                    
+                                </label> -->
+                                <b>{{(ind+1) | customString: 'IndexAnswer'}}</b> &nbsp;
+                                {{a.answer}}
+                            </div>
+                        </nz-list-item>
+                    </nz-list>
+                </div>
+            </div>
+        </div>
+        <div nz-col nzSpan='2'>
+            <div class="list-answer">
+                <a *ngFor="let a of test_subject.questions; let i = index" (click)="scroll(a.id)" nz-button
+                    [nzType]="'dashed'">Câu
+                    {{i+1}}</a>
+            </div>
+        </div>
+    </div>
+
+</div>

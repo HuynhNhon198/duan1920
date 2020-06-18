@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { HelperService } from '../../../services/helper.service';
 
 @Component({
   selector: 'app-register',
@@ -8,11 +9,12 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 })
 export class RegisterComponent implements OnInit {
 
-  @ViewChild('ipfocus', {static: true}) ipFocus: ElementRef;
+  @ViewChild('ipfocus', { static: true }) ipFocus: ElementRef;
   validateForm: FormGroup;
-
+  role: string;
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private helper: HelperService
   ) { }
 
   submitForm(): void {
@@ -21,7 +23,11 @@ export class RegisterComponent implements OnInit {
       this.validateForm.controls[i].updateValueAndValidity();
     }
     if (this.validateForm.valid && this.validateForm.controls.agree.value) {
-      const {name, email, password} = this.validateForm.controls;
+      if (this.role) {
+        const { name, email, password } = this.validateForm.controls;
+      } else {
+        this.helper.createMessage('Vui cho chúng tôi biết bạn là ai, Giáo Viên hoặc Học Sinh', 'error');
+      }
     }
   }
 

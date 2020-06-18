@@ -47,19 +47,15 @@
         <div nz-row [nzGutter]="16">
             <div *ngFor="let item of classes" nz-col nzXs="24" nzSm='12' nzMd='12' nzLg='8' nzXl='6' nzXXL='4'>
                 <nz-card [nzTitle]="item.name" (click)="openClass(item.code)">
-                    <p>{{item.students_length}} học sinh</p>
+                    <p style="text-transform: capitalize;">{{item.teacher}}</p>
                     <nz-tag style="letter-spacing: 1px;" [nzColor]="'#536dfe'" title="Mã Lớp">{{item.code}}</nz-tag>
                 </nz-card>
             </div>
         </div>
     </div>
 </ng-template>
-
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Thêm Lớp" (nzOnCancel)="isVisible=false" (nzOnOk)="addClass()">
-    <input #inputAddClass style="text-transform: capitalize;" nz-input placeholder="Nhập Tên Lớp Tại Đây"
-        [(ngModel)]="newClass.name" />
-    <nz-divider></nz-divider>
-    <textarea nz-input placeholder="Mô Tả" [(ngModel)]="newClass.desc"
-        [nzAutosize]="{ minRows: 2, maxRows: 5 }"></textarea>
-
+<nz-modal nzOkText='THAM GIA' [(nzVisible)]="isVisible" nzTitle="Tham Gia Lớp" (nzOnCancel)="isVisible=false"
+    (nzOnOk)="addClass()">
+    <input #inputAddClass style="text-transform: capitalize;" nz-input placeholder="Nhập Mã Lớp Tại Đây"
+        [(ngModel)]="codeToEnroll" />
 </nz-modal>

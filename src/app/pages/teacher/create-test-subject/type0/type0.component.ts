@@ -15,6 +15,8 @@ export class Type0Component implements OnInit {
 
   current_question = '';
   current_answer = '';
+  title = '';
+  public = true;
   current_answers: {
     correct: boolean;
     answer: string
@@ -23,7 +25,6 @@ export class Type0Component implements OnInit {
   list_questions: any[] = [];
   current_isTrue = false;
   info: IQuestions = {} as IQuestions;
-  visible = true;
   listOfItem = ['toán', 'văn'];
   modules = {
     toolbar: [
@@ -48,7 +49,8 @@ export class Type0Component implements OnInit {
   }
 
   test() {
-    document.getElementById('test').innerHTML = this.current_question || '';
+    // document.getElementById('test').innerHTML = this.current_question || '';
+    console.log(this.list_questions);
   }
 
   expandF() {

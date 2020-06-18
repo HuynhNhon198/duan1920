@@ -42,11 +42,11 @@
 
   .answers {
     overflow-y: scroll;
-    max-height: 340px;
+    max-height: 43vh;
     border: #d9d9d9 solid 1px;
     border-radius: 3px;
     button {
-      margin: 7px;
+      margin: 7px 0 0 7px;
       box-shadow: unset;
     }
   }

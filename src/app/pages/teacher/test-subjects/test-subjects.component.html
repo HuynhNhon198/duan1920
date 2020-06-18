@@ -1,0 +1,55 @@
+<nz-page-header [nzGhost]="false">
+    <nz-page-header-title>
+        <h3>
+            <i nz-icon nzType="exception" nzTheme="outline"></i> &nbsp; DANH SÁCH
+            ĐỀ CỦA BẠN
+        </h3>
+    </nz-page-header-title>
+    <nz-page-header-extra>
+        <a routerLink='/tao-de' nz-button nzType="primary" title="Tạo đề kiểm tra mới"><i nz-icon nzType="plus"></i></a>
+    </nz-page-header-extra>
+    <!-- <nz-page-header-content>
+        <nz-descriptions nzSize="small" [nzColumn]="3">
+            <nz-descriptions-item nzTitle="Created" [nzSpan]="1">Lili Qu</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Association" [nzSpan]="1"><a>421421</a></nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">2017-01-10</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Effective Time" [nzSpan]="1">2017-10-10</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Remarks" [nzSpan]="2">
+                Gonghu Road, Xihu District, Hangzhou, Zhejiang, China
+            </nz-descriptions-item>
+        </nz-descriptions>
+    </nz-page-header-content> -->
+</nz-page-header>
+<div class="list">
+    <nz-table nzBordered [nzData]="[{}]">
+        <thead>
+            <tr>
+                <th nzWidth='50px'>STT</th>
+                <th>Tiêu Đề</th>
+                <th>Số Câu Hỏi</th>
+                <th>Phân Loại</th>
+                <th>Tags</th>
+                <th nzWidth='120px'>Công Khai</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of list; let i=index">
+                <td class="center">{{i+1}}</td>
+                <td><a routerLink='/de/{{data.id}}'><b>{{ data.title }}</b></a></td>
+                <td>{{ data.questions_length }} Câu</td>
+                <td>
+                    <span *ngFor="let item of data.categories">
+                        {{item | uppercase}}
+                    </span>
+                </td>
+                <td>
+                    <nz-tag nzMode="checkable" [nzChecked]="true" *ngFor="let item of data.tags">#{{item | uppercase}}
+                    </nz-tag>
+                </td>
+                <td class="center">
+                    <nz-switch [(ngModel)]="data.public"></nz-switch>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>
