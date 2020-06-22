@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { HelperService } from '../../../services/helper.service';
+import { ApiService } from 'src/app/services/api.service';
+import { FirebaseService } from '../../../services/firebase.service';
 
 @Component({
   selector: 'app-register',
@@ -14,10 +16,11 @@ export class RegisterComponent implements OnInit {
   role: string;
   constructor(
     private fb: FormBuilder,
-    private helper: HelperService
+    private helper: HelperService,
+    private FBSV: FirebaseService
   ) { }
 
-  submitForm(): void {
+  async submitForm() {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
@@ -25,8 +28,9 @@ export class RegisterComponent implements OnInit {
     if (this.validateForm.valid && this.validateForm.controls.agree.value) {
       if (this.role) {
         const { name, email, password } = this.validateForm.controls;
+        this.FBSV.register(name.value, this.role, email.value, password.value);
       } else {
-        this.helper.createMessage('Vui cho chúng tôi biết bạn là ai, Giáo Viên hoặc Học Sinh', 'error');
+        this.helper.createMessage('Vui lòng cho chúng tôi biết bạn là ai, Giáo Viên hoặc Học Sinh', 'error');
       }
     }
   }

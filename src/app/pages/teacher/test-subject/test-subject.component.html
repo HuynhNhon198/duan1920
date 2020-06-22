@@ -1,8 +1,7 @@
-<nz-page-header class="site-page-header" (nzBack)="onBack()" nzBackIcon [nzTitle]="test_subject.name">
+<nz-page-header class="site-page-header" (nzBack)="onBack()" nzBackIcon [nzTitle]="test_subject.title">
 </nz-page-header>
 <div>
     <nz-descriptions [nzColumn]="1">
-        <nz-descriptions-item nzTitle="Chủ Đề">{{test_subject.categories.toString() | uppercase}}</nz-descriptions-item>
         <nz-descriptions-item nzTitle="Tags">
             <nz-tag nzMode="checkable" [nzChecked]="true" *ngFor="let item of test_subject.tags">#{{item | uppercase}}
             </nz-tag>
@@ -12,7 +11,7 @@
     <div nz-row>
         <div nz-col nzSpan='22'>
             <div class="list">
-                <div class="question" *ngFor="let item of test_subject.questions; let i = index" id="{{item.id}}">
+                <div class="question" *ngFor="let item of test_subject.questions; let i = index" id="{{i}}">
                     <!-- <app-question-view [question_dom]="item.question" [index]='i+1'></app-question-view> -->
                     <div nz-row nzJustify='space-between' class="title">
                         <div>
@@ -37,7 +36,7 @@
         </div>
         <div nz-col nzSpan='2'>
             <div class="list-answer">
-                <a *ngFor="let a of test_subject.questions; let i = index" (click)="scroll(a.id)" nz-button
+                <a *ngFor="let a of test_subject.questions; let i = index" (click)="scroll(i)" nz-button
                     [nzType]="'dashed'">Câu
                     {{i+1}}</a>
             </div>

@@ -14,24 +14,97 @@ import { MyClassesComponent } from './pages/student/my-classes/my-classes.compon
 import { ClassComponent as StudentClass } from './pages/student/my-classes//class/class.component';
 import { MyExamsComponent } from './pages/student/my-exams/my-exams.component';
 import { DoExamComponent } from './pages/student/do-exam/do-exam.component';
+import {
+  hasCustomClaim,
+  redirectUnauthorizedTo,
+  AngularFireAuthGuard
+} from '@angular/fire/auth-guard';
+import { Page404Component } from './pages/page404/page404.component';
+import { MeComponent } from './pages/me/me.component';
 
+const teacher = () => hasCustomClaim('teacher');
+const student = () => hasCustomClaim('student');
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/tao-de' },
-  { path: 'welcome', component: WelcomeComponent },
+  {
+    path: '', component: WelcomeComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  {
+    path: 'me', component: MeComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
   { path: 'login', component: LoginComponent },
-  { path: 'de/:id', component: TestSubjectComponent },
-  { path: 'tao-de', component: CreateTestSubjectComponent },
-  { path: 'danh-sach-de', component: TestSubjectsComponent },
-  { path: 'danh-sach-lop-hoc', component: ClassesComponent },
-  { path: 'danh-sach-cau-hoi', component: QuestionsComponent },
-  { path: 'bai-kiem-tra/:id', component: ExamComponent },
-  { path: 'danh-sach-bai-kiem-tra', component: ExamsComponent },
-  { path: 'lop-hoc/:id', component: ClassComponent },
-  { path: 'student/danh-sach-lop-hoc', component: MyClassesComponent },
-  { path: 'student/lop-hoc/:id', component: StudentClass },
-  { path: 'student/danh-sach-bai-kiem-tra', component: MyExamsComponent },
-  { path: 'student/kiem-tra/:id', component: DoExamComponent }
+  {
+    path: 'de/:id', component: TestSubjectComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  {
+    path: 'tao-de', component: CreateTestSubjectComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: teacher }
+  },
+  {
+    path: 'danh-sach-de', component: TestSubjectsComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  {
+    path: 'danh-sach-lop-hoc', component: ClassesComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: teacher }
+  },
+  {
+    path: 'danh-sach-cau-hoi', component: QuestionsComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: teacher }
+  },
+  {
+    path: 'bai-kiem-tra/:id', component: ExamComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: teacher }
+  },
+  {
+    path: 'danh-sach-bai-kiem-tra', component: ExamsComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: teacher }
+  },
+  {
+    path: 'lop-hoc/:id', component: ClassComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: teacher }
+  },
+  {
+    path: 'student/danh-sach-lop-hoc', component: MyClassesComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: student }
+  },
+  {
+    path: 'student/lop-hoc/:id', component: StudentClass,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: student }
+  },
+  {
+    path: 'student/danh-sach-bai-kiem-tra', component: MyExamsComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: student }
+  },
+  {
+    path: 'student/kiem-tra/:id', component: DoExamComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: student }
+  },
+  {
+    path: '404',
+    component: Page404Component,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  { path: '**', redirectTo: '404' },
 ];
 
 @NgModule({

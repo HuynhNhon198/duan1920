@@ -43,6 +43,16 @@
                 <textarea nz-input [(ngModel)]="questions.desc" placeholder="Mô tả"
                     [nzAutosize]="{ minRows: 3, maxRows: 6 }"></textarea>
             </div>
+            <div>
+                <nz-tag *ngFor="let tag of current_tags; let i = index" nzMode="closeable"
+                    (nzAfterClose)="handleClose(tag)">
+                    {{ tag }}
+                </nz-tag>
+                <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()"> <i nz-icon
+                        nzType="plus"></i> Tag Mới </nz-tag>
+                <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue"
+                    style="width: 78px;" (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()" />
+            </div>
             <h3>Công Khai (xuất hiện trên thư viện chung) &nbsp; <nz-switch [(ngModel)]="public"></nz-switch>
             </h3>
             <nz-divider></nz-divider>
@@ -100,7 +110,7 @@
             </div>
             <nz-divider></nz-divider>
             <div nz-row nzJustify="end" style="margin-bottom: 0;">
-                <button nz-button nzType="primary"><i nz-icon nzType="check"></i>LƯU</button>
+                <button nz-button nzType="primary" (click)="saveTest()"><i nz-icon nzType="check"></i>LƯU</button>
             </div>
         </div>
     </div>

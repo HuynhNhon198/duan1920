@@ -1,5 +1,4 @@
-<nz-page-header class="site-page-header" (nzBack)="onBack()" nzBackIcon
-    [nzTitle]="exam.title + ' - Lớp' + exam.of_class">
+<nz-page-header class="site-page-header" (nzBack)="onBack()" nzBackIcon [nzTitle]="exam.title ">
 </nz-page-header>
 <nz-descriptions [nzColumn]="2">
     <nz-descriptions-item nzTitle="Bắt Đầu Lúc"> <a nz-button nzSize='small'
@@ -9,13 +8,23 @@
         {{exam.desc}}
     </nz-descriptions-item>
     <nz-descriptions-item nzTitle="Thời Gian Làm Bài">{{exam.duration}} phút</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="Đề"><a routerLink='/de/{{exam.test_subject.id}}' target="_blank"
-            rel="noopener noreferrer">{{exam.test_subject.title}}</a> - {{exam.test_subject.questions_length}} Câu
+    <nz-descriptions-item nzTitle="Đề"><a style="text-transform: capitalize;" routerLink='/de/{{exam.test_subject_id}}'
+            target="_blank" rel="noopener noreferrer">{{test_subject.title}}</a> - {{test_subject.questions.length}} Câu
     </nz-descriptions-item>
 </nz-descriptions>
 <nz-divider style="margin: 15px 0"></nz-divider>
-<h3><i nz-icon nzType="snippets" nzTheme="outline"></i> KẾT QUẢ LÀM BÀI</h3>
-<ng-container *ngIf="exam.students_statis.length > 0; else empty">
+<div nz-row nzJustify='space-between'>
+    <h3><i nz-icon nzType="snippets" nzTheme="outline"></i> KẾT QUẢ LÀM BÀI</h3>
+    <div>
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input [(ngModel)]="text" (input)='search()' type="text" nz-input placeholder="Tìm kiếm bằng tên, email" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+            <i nz-icon nzType="search"></i>
+        </ng-template>
+    </div>
+</div>
+<ng-container *ngIf="results.length > 0; else empty">
 
     <nz-table nzBordered [nzData]="[{}]">
         <thead>
@@ -23,21 +32,18 @@
                 <th nzWidth='50px'>STT</th>
                 <th>Họ Và Tên</th>
                 <th>Email</th>
-                <th>Mã</th>
-                <th>Số Câu Đúng</th>
-                <th>Số Câu Sai</th>
                 <th>Điểm</th>
+                <th>Trạng Thái</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let data of exam.students_statis; let i=index">
+            <tr *ngFor="let data of results; let i=index">
                 <td class="center">{{i+1}}</td>
-                <td style="text-transform: capitalize;"><b>{{ data.name }}</b></td>
-                <td>{{data.email}}</td>
-                <td>{{data.id}}</td>
-                <td>{{data.correct}}</td>
-                <td>{{data.incorrect}}</td>
-                <td><b>{{((data.correct / exam.test_subject.questions_length)*10).toFixed(1)}}</b></td>
+                <td style="text-transform: capitalize;"><b>{{ data.info.name }}</b></td>
+                <td>{{data.info.email}}</td>
+                <td><b>{{ data.status === 1 ? (data.results.corrects.length/data.results.q_length)*10 : '...'}}</b></td>
+                <td>{{data.status === 1 ? ('Hoàn Thành (' + (data.ctime * 1000 | date: 'HH:mm') + ' - ' +  (data.results.time * 1000 | date: 'HH:mm') + ') '): ('Đang Làm - Bắt Đầu Lúc '+(data.ctime*1000 | date:'HH:mm')+' (Còn ' + data.duration/60 + ' phút)')}}
+                </td>
             </tr>
         </tbody>
     </nz-table>

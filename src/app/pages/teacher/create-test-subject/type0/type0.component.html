@@ -1,9 +1,18 @@
 <div nz-row nzJustify='space-between'>
     <input autofocus nz-input style="width: 50%;" placeholder="Nhập tiêu đề của đề này tại đây" [(ngModel)]="title" />
     <div>
+        <nz-tag *ngFor="let tag of current_tags; let i = index" nzMode="closeable" (nzAfterClose)="handleClose(tag)">
+            {{ tag }}
+        </nz-tag>
+        <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()"> <i nz-icon
+                nzType="plus"></i> Tag Mới </nz-tag>
+        <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue"
+            style="width: 78px;" (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()" />
+        <nz-divider nzType="vertical"></nz-divider>
         Công Khai (thư viện chung): <nz-switch [(ngModel)]="public"></nz-switch>
         <nz-divider nzType="vertical"></nz-divider>
-        <button nz-button nzType="primary"><i nz-icon nzType="save" nzTheme="outline"></i>Lưu</button>
+        <button nz-button nzType="primary" (click)="saveTest()"><i nz-icon nzType="save"
+                nzTheme="outline"></i>Lưu</button>
     </div>
 </div>
 <nz-divider></nz-divider>
@@ -54,7 +63,9 @@
     </div>
     <div nz-col nzSm='12' nzXs='24' style="padding-left: 24px;">
         <div nz-row nzJustify='space-between'>
-            <h3>DANH SÁCH CÂU HỎI</h3>
+            <h3 nz-col>DANH SÁCH CÂU HỎI <a nz-col nz-button nzType="default" (click)="isVisible = true">
+                    <i nz-icon nzType="plus" nzTheme="outline"></i>Thêm Từ Thư Viện
+                </a></h3>
             <div *ngIf="list_questions.length > 0">
                 <u style="cursor: pointer;" (click)="expandF()">{{!expand? 'Thu Nhỏ': 'Mở Rộng'}}</u>
                 <i nz-icon nzTheme='outline' nzType="close-circle"
@@ -108,3 +119,21 @@
         </ng-template>
     </div>
 </div>
+
+<nz-modal nzOkText='' [(nzVisible)]="isVisible" nzTitle="Tìm Nhanh Câu Hỏi" (nzOnCancel)="isVisible=false"
+    (nzOnOk)="addQuestionFormLib()">
+
+    <nz-select style="width: 100%;" [(ngModel)]="findQ" (ngModelChange)='selectQ()' (click)="findQe()"
+        style="min-width: 200px; max-width: 400px;" nzShowSearch nzAllowClear
+        nzPlaceHolder="Tìm Câu Hỏi Trong Thư Viện Của Bạn Tại Đây">
+        <ng-container *ngFor="let o of options">
+            <nz-option nzCustomContent *ngIf="!isLoading" [nzValue]="o._id" [nzLabel]='o.question'>
+                <div [innerHTML]='o.question | safeHtml'></div>
+            </nz-option>
+        </ng-container>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+            <i style="margin-right: 8px;" nz-icon nzType="loading" class="loading-icon"></i> Đang Truy
+            Vấn...
+        </nz-option>
+    </nz-select>
+</nz-modal>

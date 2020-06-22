@@ -1,7 +1,15 @@
+h3 {
+  border-bottom: #4d65ec solid 3px;
+  width: fit-content;
+  padding-bottom: 4px;
+  color: #0e249e;
+}
+
 .list {
   background: #f0f2f5;
   padding: 30px;
-  max-height: 75vh;
+  max-height: 22vh;
+  border: #eee solid 1px;
   overflow-y: scroll;
   margin-top: 20px;
   .ant-card {

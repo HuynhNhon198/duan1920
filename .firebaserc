@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "du-an-4bf5f"
+  },
+  "targets": {
+    "luyendetuhoc247": {
+      "hosting": {
+        "DUAN1920": [
+          "luyendetuhoc247"
+        ]
+      }
+    }
   }
 }

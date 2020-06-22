@@ -1,3 +1,63 @@
-<h1>Simple Quill Editor</h1>
+<nz-page-header class="welcome-page-header" nzTitle="Xin Chào! ...{{helper.getRole().name}}"
+    nzSubtitle="{{helper.getRole().role | customString: 'role'}}">
+</nz-page-header>
+<nz-divider></nz-divider>
+<div *ngIf="helper.getRole().role === 'student'" class="content">
+    <app-my-classes></app-my-classes>
+    <nz-divider></nz-divider>
+    <div nz-row nzJustify='space-between'>
+        <h3>
+            <i nz-icon nzType="file-search" nzTheme="outline"></i> Thư Viện Đề Kiểm Tra
+        </h3>
+        <div nz-row>
+            <div>
+                <nz-select style="float: right;
+                    margin-right: 10px;" [ngModel]='tagSearch' (ngModelChange)='searchByTags($event)' nzShowSearch
+                    nzAllowClear nzPlaceHolder="Lọc Theo Tags">
+                    <nz-option *ngFor="let item of tags" [nzLabel]="'#'+(item | uppercase)" [nzValue]="item">
+                    </nz-option>
+                </nz-select>
+            </div>
+            <div style="padding-bottom: 10px;">
+                <nz-input-group [nzSuffix]="suffixIconSearch">
+                    <input [(ngModel)]="text" (input)='search()' type="text" nz-input
+                        placeholder="Tìm kiếm đề kiểm tra" />
+                </nz-input-group>
+                <ng-template #suffixIconSearch>
+                    <i nz-icon nzType="search"></i>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+    <nz-table nzBordered [nzData]="[{}]">
+        <thead>
+            <tr>
+                <th nzWidth='50px'>STT</th>
+                <th>Tiêu Đề</th>
+                <th>Số Câu Hỏi</th>
+                <th>Tags</th>
+                <th>Tạo Ngày</th>
+                <th>Người Tạo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of tests; let i=index">
+                <td class="center">{{i+1}}</td>
+                <td style="text-transform: capitalize;"><a routerLink='/de/{{data._id}}'><b>{{ data.title }}</b></a>
+                </td>
+                <td>{{ data.q_length }} Câu</td>
 
-<quill-editor [styles]="{height: '200px'}"></quill-editor>
+                <td>
+                    <nz-tag nzMode="checkable" [nzChecked]="true" *ngFor="let item of data.tags">#{{item | uppercase}}
+                    </nz-tag>
+                </td>
+                <td>
+                    {{data.ctime * 1000 | date: 'HH:mm dd/MM/y'}}
+                </td>
+                <td>
+                    {{data.create_by.name}}
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>

@@ -19,8 +19,12 @@
         </h3>
     </nz-page-header-title>
     <nz-page-header-extra>
-        <button nz-button nzType="primary" title="Tạo câu hỏi mới" (click)="open()"><i nz-icon
-                nzType="plus"></i></button>
+        <button nz-button nzType="primary" title="Tạo câu hỏi mới" (click)="open()"><i nz-icon nzType="plus"></i>Tạo Câu
+            Hỏi Mới</button>
+        <button nz-button nzType="primary" title="Tạo câu hỏi mới" (click)="isVisible = true"><i nz-icon
+                nzType="retweet" nzTheme="outline"></i>Sinh
+            Câu Hỏi
+            Tự Động</button>
     </nz-page-header-extra>
     <!-- <nz-page-header-content>
         <nz-descriptions nzSize="small" [nzColumn]="3">
@@ -75,7 +79,7 @@
                         </thead>
         <tbody>
             <tr *ngFor="let item of innerTable.data; let i = index">
-                <td class="center"><label nz-checkbox [(ngModel)]="item.correct"></label></td>
+                <td class="center"><label nzDisabled nz-checkbox [(ngModel)]="item.correct"></label></td>
                 <td><b>{{i +1 | customString: 'IndexAnswer'}}</b> &nbsp;{{item.answer}}</td>
                 <td></td>
             </tr>
@@ -87,7 +91,9 @@
     </nz-table>
 </ng-template>
 
-<nz-drawer [nzClosable]="false" [nzVisible]="visible" nzWidth='40%' nzPlacement="right"
+
+
+<nz-drawer [nzMaskClosable]="false" [nzVisible]="visible" nzWidth='40%' nzPlacement="right"
     [nzTitle]="new?'TẠO CÂU HỎI MỚI':'CHỈNH SỬA CÂU HỎI'" (nzOnClose)="close()">
     <h3>TAGS: </h3>
     <nz-tag *ngFor="let tag of question.tags; let i = index" nzMode="closeable" (nzAfterClose)="handleClose(tag)">
@@ -141,3 +147,35 @@
         </div>
     </ng-container>
 </nz-drawer>
+
+<nz-modal [(nzVisible)]="isVisible" [nzMaskClosable]='false' nzTitle="Tạo Câu Hỏi Tự Động"
+    (nzOnCancel)='isVisible = false' (nzOnOk)="saveAutoQ()" nzOkText='LƯU'>
+    <div nz-row nzJustify='center'>
+        <nz-radio-group [(ngModel)]="autoQ" (ngModelChange)='selectAuto()' nzButtonStyle="solid">
+            <label nz-radio-button nzValue="cong">X + Y</label>
+            <label nz-radio-button nzValue="tru">X - Y</label>
+            <label nz-radio-button nzValue="nhan">X x Y</label>
+            <label nz-radio-button nzValue="chia">X : Y</label>
+        </nz-radio-group>
+    </div>
+    <ng-container *ngIf="question.q.length > 0">
+        <nz-divider></nz-divider>
+        <h3>{{question.q}}</h3>
+        <nz-checkbox-wrapper style="width: 100%;">
+            <div nz-row>
+                <div nz-col nzSpan="6" *ngFor="let item of question.answers"><label nz-checkbox [ngModel]='item.correct'
+                        nzDisabled><span style="color: #000 !important">{{item.answer}}</span></label></div>
+            </div>
+        </nz-checkbox-wrapper>
+        <nz-divider></nz-divider>
+        <h3>TAGS: </h3>
+        <nz-tag *ngFor="let tag of question.tags; let i = index" nzMode="closeable" (nzAfterClose)="handleClose(tag)">
+            {{ tag }}
+        </nz-tag>
+        <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()"> <i nz-icon
+                nzType="plus"></i> Tag Mới </nz-tag>
+        <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue"
+            style="width: 78px;" (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()" />
+    </ng-container>
+
+</nz-modal>

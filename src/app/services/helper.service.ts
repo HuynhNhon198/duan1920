@@ -1,10 +1,22 @@
 import { Injectable } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd';
+import { BehaviorSubject } from 'rxjs';
+export interface IRole {
+  name?: string;
+  email?: string;
+  role?: string;
+  photoUrl?: string;
+  uid: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class HelperService {
+  role$ = new BehaviorSubject<IRole>({
+    uid: undefined
+  });
 
   statusExam = [
     {
@@ -53,5 +65,39 @@ export class HelperService {
 
   closeMessage(id: string) {
     this.message.remove(id);
+  }
+
+  setRole(data: IRole) {
+    data.photoUrl = data.photoUrl === null ? '' : data.photoUrl;
+    this.role$.next(data);
+  }
+
+  getRole() {
+    const role = this.role$.getValue();
+    return role;
+  }
+
+  getMiliSec(date?: Date) {
+    const d = date ? (new Date(date)).getTime() : (new Date()).getTime();
+    // tslint:disable-next-line: no-bitwise
+    return (d / 1000) >> 0;
+  }
+
+  getUniqueListBy(arr, key) {
+    return [...new Map(arr.map(item => [item[key], item])).values()]
+  }
+
+  sortArrObj(arr: any[], prop: string, type: string) {
+    if (type.toLowerCase() === 'asc') {
+      return arr.sort((a, b) => (a[prop] > b[prop]) ? 1 : ((b[prop] > a[prop]) ? -1 : 0));
+    } else {
+      return arr.sort((a, b) => (a[prop] < b[prop]) ? 1 : ((b[prop] < a[prop]) ? -1 : 0));
+    }
+  }
+
+  async asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
   }
 }

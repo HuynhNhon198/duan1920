@@ -1,78 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FirestoreService } from '../../../services/firestore.service';
 @Component({
   selector: 'app-test-subject',
   templateUrl: './test-subject.component.html',
   styleUrls: ['./test-subject.component.scss']
 })
 export class TestSubjectComponent implements OnInit {
-  test_subject = {
-    name: 'Đề Kiểm Tra Chương I môn Toán Lớp 12',
-    tags: ['chương 1', 'đại số'],
-    categories: ['toán'],
-    questions: [
-      {
-        id: '1',
-        question: '<p>1 + 1 = ?</p>',
-        tags: ['toán'],
-        answers: [
-          {
-            answer: '3',
-          },
-          {
-            answer: '2',
-          },
-          {
-            answer: '1',
-          },
-          {
-            answer: '4',
-          }
-        ],
-      },
-      {
-        id: '2',
-        question: '<p>5x2=?</p>',
-        tags: ['toán'],
-        answers: [
-          {
-            answer: '3',
-          },
-          {
-            answer: '7',
-          },
-          {
-            answer: '10',
-          },
-          {
-            answer: '4',
-          }
-        ],
-      },
-      {
-        id: '2',
-        question: '<p>5x2=?</p>',
-        tags: ['toán'],
-        answers: [
-          {
-            answer: '3',
-          },
-          {
-            answer: '7',
-          },
-          {
-            answer: '10',
-          },
-          {
-            answer: '4',
-          }
-        ],
-      }
-    ]
-  };
-  constructor(private location: Location) { }
+  test_subject: any = {};
+  test_subject_id: string;
+  constructor(private location: Location, private route: ActivatedRoute, private fsSV: FirestoreService, private router: Router) {
+    route.params.subscribe(p => this.test_subject_id = p.id);
+  }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.test_subject = await this.fsSV.getDoc(this.fsSV.testSubjectCol, this.test_subject_id);
+    if (!this.test_subject) {
+      this.router.navigate(['/404']);
+    }
   }
   onBack(): void {
     this.location.back();

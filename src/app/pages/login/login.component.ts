@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HelperService } from 'src/app/services/helper.service';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
   selector: 'app-login',
@@ -13,20 +14,10 @@ export class LoginComponent implements OnInit {
   validateForm: FormGroup;
   login = true;
 
-  submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
-    }
-
-    if (this.validateForm.valid) {
-      const { email, password } = this.validateForm.controls;
-    }
-  }
 
   constructor(
     private fb: FormBuilder,
-    private helper: HelperService
+    private FBSV: FirebaseService
   ) { }
 
   ngOnInit(): void {
@@ -38,10 +29,21 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  submitForm(): void {
+    for (const i in this.validateForm.controls) {
+      this.validateForm.controls[i].markAsDirty();
+      this.validateForm.controls[i].updateValueAndValidity();
+    }
+
+    if (this.validateForm.valid) {
+      const { email, password } = this.validateForm.controls;
+      this.FBSV.signIn(email.value, password.value);
+    }
+  }
   resetPassword() {
     const email = this.validateForm.controls.email.value;
     if (email) {
-
+      this.FBSV.resetPassword(email);
     } else {
 
     }

@@ -15,6 +15,13 @@ import { QuillModule } from 'ngx-quill';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
+
+import { environment } from 'src/environments/environment.prod';
+
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/login/register/register.component';
@@ -40,6 +47,8 @@ import { MyExamsComponent } from './pages/student/my-exams/my-exams.component';
 
 import { ClassComponent as StudentClass } from './pages/student/my-classes//class/class.component';
 import { DoExamComponent } from './pages/student/do-exam/do-exam.component';
+import { Page404Component } from './pages/page404/page404.component';
+import { MeComponent } from './pages/me/me.component';
 registerLocaleData(vi);
 
 @NgModule({
@@ -68,7 +77,9 @@ registerLocaleData(vi);
     MyClassesComponent,
     MyExamsComponent,
     StudentClass,
-    DoExamComponent
+    DoExamComponent,
+    Page404Component,
+    MeComponent
   ],
   imports: [
     NzAffixModule,
@@ -81,9 +92,12 @@ registerLocaleData(vi);
     HttpClientModule,
     BrowserAnimationsModule,
     QuillModule.forRoot(),
-    DragDropModule
+    DragDropModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAuthModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: vi_VN }],
+  providers: [AngularFireAuthGuard, { provide: NZ_I18N, useValue: vi_VN }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

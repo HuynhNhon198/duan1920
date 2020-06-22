@@ -1,0 +1,16 @@
+<nz-descriptions nzTitle="Thông Tin Cá Nhân" [nzColumn]='1'>
+    <nz-descriptions-item nzTitle="Tên Hiển Thị">
+        <p nz-typography nzEditable [(nzContent)]="me.name"></p>
+    </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="SĐT">
+        <p nz-typography nzEditable [(nzContent)]="me.phone"></p>
+    </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Địa Chỉ">
+        <p nz-typography nzEditable [(nzContent)]="me.hometown"></p>
+    </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Thuộc Trường">
+        <p nz-typography nzEditable [(nzContent)]="me.school"></p>
+    </nz-descriptions-item>
+</nz-descriptions>
+
+<button nz-button nzType="primary" (click)="save()"><i nz-icon nzType="check" nzTheme="outline"></i>LƯU</button>

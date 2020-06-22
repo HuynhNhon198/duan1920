@@ -34,6 +34,20 @@ export class CustomStringPipe implements PipeTransform {
         const ref3 = this.helper.typeExam;
         this.newStr = ref3.find(x => x.id === val).name;
         break;
+
+      case 'role':
+        const ref4 = [
+          {
+            code: 'teacher',
+            name: 'Giáo Viên'
+          },
+          {
+            code: 'student',
+            name: 'Học Sinh'
+          }
+        ];
+        this.newStr = ref4.find(x => x.code === val).name;
+        break;
     }
     return this.newStr;
 

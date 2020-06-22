@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UploadChangeParam } from 'ng-zorro-antd';
 import { HelperService } from 'src/app/services/helper.service';
-import { IQuestions } from 'src/app/models/questions';
+import { FirestoreService } from '../../../../services/firestore.service';
 
 @Component({
   selector: 'app-type1',
@@ -9,13 +9,19 @@ import { IQuestions } from 'src/app/models/questions';
   styleUrls: ['./type1.component.scss']
 })
 export class Type1Component implements OnInit {
+  inputValue = '';
+  @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
+  inputVisible = false;
+  current_tags = [];
   file: File;
-  // link_google_drive: string;
-  link_google_drive = 'https://drive.google.com/file/d/1DL5pqvIJGbTlO5Ws0u0vv-2niVSheFGv/preview';
+  link_google_drive: string;
+  // link_google_drive = 'https://drive.google.com/file/d/1DL5pqvIJGbTlO5Ws0u0vv-2niVSheFGv/preview';
   linkInInput = '';
   questions = {
-
-  } as IQuestions;
+    title: '',
+    desc: ''
+  } as any;
+  _id = '';
   QLength = 0;
   answers: string[] = [];
   public = true;
@@ -23,14 +29,14 @@ export class Type1Component implements OnInit {
   index = 0;
 
   constructor(
-    private helper: HelperService
+    private helper: HelperService,
+    private fsSV: FirestoreService
   ) { }
 
   ngOnInit(): void {
   }
 
   onChange(result: Date): void {
-    console.log('Selected Time: ', result.getTime());
   }
 
   addItem(input: HTMLInputElement): void {
@@ -45,7 +51,6 @@ export class Type1Component implements OnInit {
 
   handleChange({ file }: UploadChangeParam): void {
     this.file = file.originFileObj;
-    console.log(this.file);
     const id_mess = this.helper.loadingMessage('Đang tải lên, vui lòng đợi...');
     setTimeout(() => {
       this.helper.closeMessage(id_mess);
@@ -54,7 +59,6 @@ export class Type1Component implements OnInit {
 
   changeQLength() {
     this.answers.length = this.QLength;
-    console.log(this.answers);
   }
 
   setAnswerCorrect(ind: number) {
@@ -72,6 +76,47 @@ export class Type1Component implements OnInit {
       this.link_google_drive = this.linkInInput.replace('view?usp=sharing', 'preview');
     } else {
       this.helper.createMessage('Vui lòng nhập link share từ google drive trước khi thêm', 'warning');
+    }
+  }
+
+  handleClose(removedTag: {}): void {
+    this.current_tags = this.current_tags.filter(tag => tag !== removedTag);
+  }
+
+  showInput(): void {
+    this.inputVisible = true;
+    setTimeout(() => {
+      this.inputElement?.nativeElement.focus();
+    }, 10);
+  }
+
+  handleInputConfirm(): void {
+    if (this.inputValue && this.current_tags.indexOf(this.inputValue) === -1) {
+      this.current_tags = [...this.current_tags, this.inputValue];
+    }
+    this.inputValue = '';
+    this.inputVisible = false;
+  }
+
+  async saveTest() {
+    if (this.questions.title.length > 0 && this.current_tags.length > 0) {
+      if (this.answers.filter(x => x && x.length > 0).length === this.answers.length) {
+        const test = {
+          title: this.questions.title,
+          desc: this.questions.desc,
+          public: this.public,
+          tags: this.current_tags,
+          from_file: true,
+          link_google_drive: this.link_google_drive,
+          answer_correct_of_questions: [...this.answers.filter(x => x && x.length > 0)]
+        };
+        console.log(test);
+        this._id = await this.fsSV.setDoc(this.fsSV.testSubjectCol, this._id, test, this._id === '' ? true : undefined);
+      } else {
+        this.helper.createMessage('Vui lòng thêm đáp án đúng cho các câu hỏi trước khi lưu', 'error');
+      }
+    } else {
+      this.helper.createMessage('Vui lòng thêm tiêu đề, tag trước khi lưu', 'error');
     }
   }
 }

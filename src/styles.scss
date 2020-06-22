@@ -62,3 +62,36 @@ thead.ant-table-thead th {
 .ant-table-tbody > tr .ant-table-wrapper:only-child .ant-table {
   margin-left: 41px !important;
 }
+
+.ant-card-head-title {
+  text-transform: capitalize;
+}
+.welcome-page-header span.ant-page-header-heading-title {
+  font-family: "Barlow", sans-serif;
+  text-transform: capitalize;
+  color: #4e4e4e;
+}
+
+.welcome-page-header span.ant-page-header-heading-sub-title {
+  background: #536dfe2e;
+  color: #536dfe;
+  border-radius: 3px;
+  padding: 0px 10px;
+  font-size: 14px;
+}
+
+.ant-descriptions-title {
+  text-transform: capitalize;
+}
+
+.ant-list-item-meta-description {
+  text-transform: capitalize;
+}
+
+.noti .ant-avatar {
+  border-radius: 0;
+  margin-top: 5px;
+}
+span.ant-page-header-heading-title {
+  text-transform: capitalize;
+}

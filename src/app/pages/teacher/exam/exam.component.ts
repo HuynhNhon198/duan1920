@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { HelperService } from 'src/app/services/helper.service';
+import { FirestoreService } from '../../../services/firestore.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-exam',
@@ -7,60 +11,36 @@ import { Location } from '@angular/common';
   styleUrls: ['./exam.component.scss']
 })
 export class ExamComponent implements OnInit {
-
+  text = '';
   exam = {
-    title: 'Kiểm Tra Hết học kì 1',
-    of_class: '1A',
-    students_statis: [
-      {
-        name: 'Nguyen Van A',
-        id: 'dsjsd',
-        email: 'a@gmail.com',
-        correct: 30,
-        incorrect: 10
-      },
-      {
-        name: 'Dao Van E',
-        id: 'dsjsd',
-        email: 'a@gmail.com',
-        correct: 45,
-        incorrect: 5
-      },
-      {
-        name: 'Nguyen Thi A',
-        id: 'dsjsd',
-        email: 'a@gmail.com',
-        correct: 34,
-        incorrect: 10
-      }, {
-        name: 'Nguyen Van C',
-        id: 'dsjsd',
-        email: 'a@gmail.com',
-        correct: 25,
-        incorrect: 20
-      }, {
-        name: 'Nguyen Van B',
-        id: 'dsjsd',
-        email: 'a@gmail.com',
-        correct: 38,
-        incorrect: 10
-      }
-    ],
-    test_subject: {
-      title: 'Đề Kiểm Tra Chương I môn Toán Lớp 12',
-      id: 'dssdsa',
-      questions_length: 50
-    },
-    status: 0,
-    type: 0,
-    id: 'hjuiuig',
-    desc: '',
-    time_start: 1592299074,
-    duration: 60
   } as any;
-  constructor(private location: Location) { }
+  test_subject: any = {
+    questions: []
+  };
+  results = [];
+  temp = []
+  exam_id: string;
+  sub: Subscription;
+  constructor(private location: Location, private helper: HelperService, private fsSV: FirestoreService, private route: ActivatedRoute, private router: Router) {
+    route.params.subscribe(params => {
+      this.exam_id = params.id;
+    });
+  }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.exam = await this.fsSV.getDoc(this.fsSV.examsCol, this.exam_id);
+    if (this.exam && this.exam.create_by.uid === this.helper.getRole().uid) {
+      this.test_subject = await this.fsSV.getDoc(this.fsSV.testSubjectCol, this.exam.test_subject_id);
+      this.sub = this.fsSV.subStudentsInExam(this.exam_id).subscribe(students => {
+        this.results = students;
+        this.temp = this.results;
+      });
+    } else {
+      this.router.navigate(['/404']);
+    }
+  }
+  search() {
+    this.results = this.text === '' ? this.temp : this.temp.filter(x => x.info.name.toLowerCase().includes(this.text.toLowerCase()) || x.info.email.toLowerCase().includes(this.text.toLowerCase()));
   }
   onBack(): void {
     this.location.back();

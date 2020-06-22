@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild, TemplateRef, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ElementRef, NgZone } from '@angular/core';
 import { HelperService } from '../../../services/helper.service';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { FirestoreService } from '../../../services/firestore.service';
+import { AutoQuestionService } from '../../../services/auto-question.service';
 @Component({
   selector: 'app-questions',
   templateUrl: './questions.component.html',
@@ -12,58 +14,7 @@ export class QuestionsComponent implements OnInit {
   inputValue = '';
   @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
   @ViewChild('answerView') answerView: ElementRef;
-  listQuestions = [
-    {
-      id: '1',
-      question: '<p>1 + 1 = ?</p>',
-      ctime: 1591541423,
-      expand: false,
-      tags: ['toán'],
-      answers: [
-        {
-          answer: '3',
-          correct: false
-        },
-        {
-          answer: '2',
-          correct: true
-        },
-        {
-          answer: '1',
-          correct: false
-        },
-        {
-          answer: '4',
-          correct: false
-        }
-      ],
-    },
-    {
-      id: '2',
-      question: '<p>5x2=?</p>',
-      ctime: 1591541423,
-      expand: false,
-      tags: ['toán'],
-      answers: [
-        {
-          answer: '3',
-          correct: false
-        },
-        {
-          answer: '7',
-          correct: false
-        },
-        {
-          answer: '10',
-          correct: true
-        },
-        {
-          answer: '4',
-          correct: false
-        }
-      ],
-    }
-  ];
+  listQuestions = [];
   modules = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -88,14 +39,22 @@ export class QuestionsComponent implements OnInit {
     answers: [],
     tags: []
   } as any;
-
-
-  constructor(private helper: HelperService) {
-    this.listQuestions = this.listQuestions.map(x => Object.assign({ expand: false }, x));
-    console.log(this.listQuestions);
+  isVisible = false;
+  autoQ = '';
+  autoR: any;
+  constructor(
+    private helper: HelperService,
+    private fsSV: FirestoreService,
+    private auto: AutoQuestionService
+    // private ngzone: NgZone
+  ) {
+    // this.listQuestions = this.listQuestions.map(x => Object.assign({ expand: false }, x));
+    // console.log(this.listQuestions);
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.listQuestions = await this.fsSV.myDocs('questions');
+    console.log(this.listQuestions);
   }
 
   addAnswer() {
@@ -129,12 +88,16 @@ export class QuestionsComponent implements OnInit {
     this.new = false;
     this.open();
   }
-  removeQuestion(index: number) {
+  async removeQuestion(index: number) {
     console.log(index);
-    this.listQuestions.splice(index, 1);
+    const r = await this.fsSV.deleteDoc(this.fsSV.questionsCol, this.listQuestions[index]._id);
+    if (r) {
+
+      this.listQuestions.splice(index, 1);
+    }
   }
 
-  addQuestion(id?: string) {
+  async addQuestion(id?: string) {
 
     if (this.question.answers.filter(x => x.correct).length > 0) {
       if (this.question.q !== '') {
@@ -142,22 +105,30 @@ export class QuestionsComponent implements OnInit {
           if (id.length > 0) {
             const ind = this.listQuestions.findIndex(x => x.id === id);
             const { q, answers, tags } = this.question;
-            this.listQuestions[ind].question = q;
-            this.listQuestions[ind].answers = answers;
-            this.listQuestions[ind].tags = tags;
+            const r = await this.fsSV.setDoc(this.fsSV.questionsCol, this.listQuestions[ind]._id, {
+              question: q,
+              answers,
+              tags
+            });
+            if (r) {
+              this.listQuestions = await this.fsSV.myDocs('questions');
+            }
           } else {
-            this.listQuestions.push({
+            const obj = {
               question: this.question.q,
-              ctime: 1591541423,
               answers: this.question.answers,
               expand: false,
               tags: this.question.tags,
-              id: (new Date()).getTime().toString(),
-            });
-            this.question.q = '';
-            this.question.answers = [];
-            this.question.id = '';
-            this.question.tags = [];
+              id: (new Date()).getTime().toString(36),
+            };
+            const r = await this.fsSV.setDoc(this.fsSV.questionsCol, '', obj, true);
+            if (r) {
+              this.listQuestions.push(Object.assign({ _id: r }, obj));
+              this.question.q = '';
+              this.question.answers = [];
+              this.question.id = '';
+              this.question.tags = [];
+            }
           }
           this.helper.createMessage('Đã lưu câu hỏi', 'success', 1500);
           this.visible = false;
@@ -189,6 +160,7 @@ export class QuestionsComponent implements OnInit {
   }
 
   open(): void {
+    // this.ngzone.run(() => this.visible = true);
     this.visible = true;
   }
 
@@ -220,5 +192,38 @@ export class QuestionsComponent implements OnInit {
     this.inputValue = '';
     this.inputVisible = false;
   }
+  async saveAutoQ() {
+    const obj = {
+      question: this.question.q,
+      answers: this.question.answers,
+      expand: false,
+      tags: this.question.tags,
+      id: (new Date()).getTime().toString(36),
+    };
+    const r = await this.fsSV.setDoc(this.fsSV.questionsCol, '', obj, true);
+    if (r) {
+      this.listQuestions.push(Object.assign({ _id: r }, obj));
+      this.question.q = '';
+      this.question.answers = [];
+      this.question.id = '';
+      this.question.tags = [];
+      this.isVisible = false;
+      this.question = {
+        q: '',
+        answers: [],
+        tags: [],
+        id: ''
+      };
+    }
+  }
 
+  selectAuto() {
+    const r = this.auto.generate(this.autoQ);
+    this.question = {
+      id: (new Date()).getTime().toString(36),
+      q: r.question,
+      answers: r.answers,
+      tags: []
+    };
+  }
 }

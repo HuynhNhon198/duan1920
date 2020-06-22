@@ -4,6 +4,8 @@ import { HelperService } from 'src/app/services/helper.service';
 import { NzDrawerService } from 'ng-zorro-antd';
 import { NextStepComponent } from './next-step/next-step.component';
 import { IQuestions } from 'src/app/models/questions';
+import { EsService } from '../../../../services/es.service';
+import { FirestoreService } from '../../../../services/firestore.service';
 @Component({
   selector: 'app-type0',
   templateUrl: './type0.component.html',
@@ -12,15 +14,19 @@ import { IQuestions } from 'src/app/models/questions';
 export class Type0Component implements OnInit {
 
   @ViewChild('answerView') answerView: ElementRef;
-
+  inputValue = '';
+  @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
+  inputVisible = false;
   current_question = '';
   current_answer = '';
+  current_tags = [];
   title = '';
   public = true;
   current_answers: {
     correct: boolean;
     answer: string
   }[] = [];
+  _id = '';
   expand = false;
   list_questions: any[] = [];
   current_isTrue = false;
@@ -39,10 +45,16 @@ export class Type0Component implements OnInit {
       [{ color: [] }, { background: [] }],          // dropdown with defaults from theme
     ]
   };
-
+  isVisible = false;
+  isLoading = false;
+  findQ = '';
+  options = [
+  ];
   constructor(
     private helper: HelperService,
-    private drawerService: NzDrawerService
+    private drawerService: NzDrawerService,
+    private esSV: EsService,
+    private fsSV: FirestoreService
   ) { }
 
   ngOnInit() {
@@ -80,6 +92,17 @@ export class Type0Component implements OnInit {
     }
   }
 
+  selectQ() {
+    console.log(this.findQ);
+  }
+
+  async findQe() {
+    this.isLoading = true;
+    const results = await this.esSV.getByQuery('questions', 'create_by.uid', this.helper.getRole().uid);
+    this.options = results;
+    this.isLoading = false;
+  }
+
   renderQuestion() {
     setTimeout(() => {
       this.list_questions.forEach((e, i) => {
@@ -94,7 +117,7 @@ export class Type0Component implements OnInit {
     this.renderQuestion();
   }
 
-  addQuestion() {
+  async addQuestion() {
     if (this.current_answers.filter(x => x.correct).length > 0) {
       if (this.current_question !== '') {
         this.list_questions.push({
@@ -102,6 +125,13 @@ export class Type0Component implements OnInit {
           answers: this.current_answers
         });
         this.renderQuestion();
+        await this.fsSV.setDoc(this.fsSV.questionsCol, '', {
+          question: this.current_question,
+          answers: this.current_answers,
+          expand: false,
+          tags: this.current_tags,
+          id: (new Date()).getTime().toString(36),
+        }, true);
         this.current_question = '';
         this.current_answers = [];
       } else {
@@ -145,5 +175,51 @@ export class Type0Component implements OnInit {
   }
   onChange(result: Date): void {
     console.log('Selected Time: ', result.getTime());
+  }
+
+  async addQuestionFormLib() {
+    if (this.findQ.length > 0) {
+      const q = this.options.find(x => x._id === this.findQ);
+      this.list_questions.push({
+        question: q.question,
+        answers: q.answers
+      });
+      this.renderQuestion();
+      this.isVisible = false;
+    }
+  }
+
+  handleClose(removedTag: {}): void {
+    this.current_tags = this.current_tags.filter(tag => tag !== removedTag);
+  }
+
+  showInput(): void {
+    this.inputVisible = true;
+    setTimeout(() => {
+      this.inputElement?.nativeElement.focus();
+    }, 10);
+  }
+
+  handleInputConfirm(): void {
+    if (this.inputValue && this.current_tags.indexOf(this.inputValue) === -1) {
+      this.current_tags = [...this.current_tags, this.inputValue];
+    }
+    this.inputValue = '';
+    this.inputVisible = false;
+  }
+
+  async saveTest() {
+    if (this.title.length > 0 && this.current_tags.length > 0) {
+      const test = {
+        title: this.title,
+        tags: this.current_tags,
+        questions: this.list_questions,
+        public: this.public,
+        from_file: false
+      };
+      this._id = await this.fsSV.setDoc(this.fsSV.testSubjectCol, this._id, test, this._id === '' ? true : undefined);
+    } else {
+      this.helper.createMessage('Vui lòng thêm tiêu đề và ít nhất 1 tag', 'error');
+    }
   }
 }

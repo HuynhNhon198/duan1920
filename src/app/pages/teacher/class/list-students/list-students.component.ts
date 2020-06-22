@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { HelperService } from 'src/app/services/helper.service';
+import { FirestoreService } from '../../../../services/firestore.service';
+import * as firebase from 'firebase';
+import { ActivatedRoute } from '@angular/router';
 
+const db = firebase.firestore();
 @Component({
   selector: 'app-list-students',
   templateUrl: './list-students.component.html',
@@ -7,35 +12,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListStudentsComponent implements OnInit {
 
+  class_id: string;
   students = [
-    {
-      name: 'nguyen van a',
-      email: 'abc@gmail.com',
-      code: 'sadntrx',
-      ctime: 1591541423,
-      birth: '01/01/1998',
-      hometown: 'Thai Thuy, Thai Binh',
-    },
-    {
-      name: 'nguyen van b',
-      email: 'abc@gmail.com',
-      code: 'sdsdsx',
-      ctime: 1591541423,
-      birth: '01/01/1998',
-      hometown: 'Thai Thuy, Thai Binh',
-    },
-    {
-      name: 'nguyen van c',
-      email: 'abc@gmail.com',
-      code: 'assadnx',
-      ctime: 1591541423,
-      birth: '01/01/1998',
-      hometown: 'Thai Thuy, Thai Binh',
-    }
-  ];
-  constructor() { }
 
-  ngOnInit(): void {
+  ];
+  constructor(
+    private helper: HelperService,
+    private fsSV: FirestoreService,
+    private route: ActivatedRoute
+  ) {
+    route.params.subscribe(params => {
+      this.class_id = params.id;
+    })
+  }
+
+  async ngOnInit() {
+    const docs = await db.collection(this.fsSV.classesCol).doc(this.class_id).collection('students').get();
+    docs.forEach(doc => {
+      this.students.push(doc.data());
+    })
   }
 
 }
